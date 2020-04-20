@@ -38,7 +38,7 @@ In some situation, one may want one feature in a pattern to be weighted more hea
 In streaming window mode, the Nano works by using successive, overlapping subsignals as a stream of incoming samples. Samples in this case are typically time series data. The Pattern Length is specified by the user as a "detection window size" and the minimum Value and Maximum Value for the clustering are also chosen (Figure 2) to represent the range of interest in the signal. The streaming window size is the number of input samples that the window is moved to the right (in time) in forming the next input signal.
 
 ![Figure 2](../images/Figure2.png)   
-*Figure 2: A streaming window with pattern length of 250, which means each input vector is 250 successive samples. By setting the streaming window size to 1, we form each pattern by dropping the oldest sample from current pattern and appending the next sample from the input stream.*
+*Figure 2: One feature and a streaming window with size 250, which means each input vector is 250 successive samples. To form each new pattern for clustering, we drop the oldest sample from current pattern and append the new sample from the input stream.*
 
 ### Accuracy
 In some rare cases, you may choose to reduce the clustering accuracy in order to reduce inference time. This may produce rare suboptimal assignments of input vectors to clusters, although the results will generally still be good. For example, streaming IoT applications where "lossy" clustering results are acceptable may benefit from adjusting this parameter. Accuracy is a value ranging from 0.75 to 0.99. The default value of 0.99 produces the highest accuracy results while still ensuring very good performance. 
