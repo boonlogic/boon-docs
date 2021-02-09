@@ -27,3 +27,7 @@
 [Matlab SDK](https://boonlogic.github.io/expert-matlab-sdk)
 
 [Mathematica SDK](https://boonlogic.github.io/expert-mathematica-sdk)
+
+## AVIS-dicom
+
+[Documentation Homepage](https://boonlogic.github.io/AVIS-DICOM/)
