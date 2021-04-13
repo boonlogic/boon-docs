@@ -97,7 +97,7 @@ Amber can be configured to monitor a wide variety of assets and processes. The a
 
 ### Single-Feature Versus Multi-Feature Processing
 
-A boiler may have only a single temperature sensor that reports its temperature at any given time. A motor may have an accelerometer that gives multiple correlated values (such as X-, Y-, Z- RMS or frequency band values). An engine may have multiple accelerometers giving vibrational data at multiple positions. In addition, there may be control information such as motor RPM or current draw that correlates with the mode of operation of the asset. These are all examples of **features** that Amber can use to create its models. 
+A boiler may have only a single temperature sensor that reports its temperature at any given time. A motor may have an accelerometer that gives multiple correlated values (such as X-, Y-, Z- RMS or frequency band values). An engine may have multiple accelerometers giving vibrational data at different locations. In addition, there may be control information such as motor RPM or current draw that correlates with the mode of operation of the asset. These are all examples of **features** that Amber can use to create its models. 
 
 #### Single-Feature Processing
 For some assets there may only be one feature available for processing in Amber (Figure DDD). In this case, the streaming window size becomes very important in determining the predictive model that Amber builds.  Figure FFF shows three examples.
@@ -111,16 +111,83 @@ For some assets there may only be one feature available for processing in Amber 
   </tr>
 </table>
 
-Let's take as an example the time course of the current draw from a motor, acquired by reading a PLC tag or by measuring voltage from a Hall sensor (Figure FFF(a)).
+Let's take as an example the current draw from a motor, acquired by reading a PLC tag or by measuring voltage from a Hall sensor (Figure FFF(a)). As can be seen the large feature here is a repetitive single surge of current that spans between 25 and 50 samples. We can also see that the strange deviation from normal near 5950 spans approximately 25 samples. If the current were being sample at 10 times the rate shown here, then a streaming window size of 250 to 500 would have been desireable. This *streaming window size* determines the types of patterns learned by Amber so it should be chosen intentionally by a domain expert who understands the asset and the "size" of anomalies to be detected.
 
+<table class="table">
+  <tr>
+    <td><img src="Figures/streaming_window_25.png" width="800"></td>  
+  </tr>
+  <tr>
+    <td><em>Figure GGG: A streaming window is a contiguous set of samples ending with the most recently acquired sample. The streaming window size shown here is 25. </em></td>
+  </tr>
+</table>
 
+Once a streaming window size is chosen, then Amber will "slide it along" the incoming time series. With each incoming sample Amber processes a new streaming window ending with that new sample. Thus, successive streaming windows overlap on all but their first and last samples. Amber generates a complete set of analytic outputs for each streaming window. Because the time series of values creates each pattern that is processed by Amber, it is important that the period between samples is consistent.
 
+#### Multi-Feature Processing
+**Streaming Windows Size equal to 1:** The simplest type of multi-feature processing is with multiple features and a streaming window size of 1. In this case, each collection of features from the asset is collected at the same moment in time and assembled into a single sensor fusion vector that describes relationship between those features of the asset at that moment in time (Figure HHH).
 
+<table class="table">
+  <tr>
+    <td><img src="Figures/MultiFeatureData.png" width="800"></td>  
+  </tr>
+  <tr>
+    <td><em>Figure HHH: Each row is a sensor fusion vector with 6 features that will be analyzed by Amber. Three of the sensor fusion vectors are plotted. Amber builds its models based on the relationships between measured features of the asset at each point in time. The timestamp is not part of the sensor fusion vector. </em></td>
+  </tr>
+</table>
+
+It is worth noting in Figure HHH, that the period between sensor fusion vectors is not consistent. This is not a problem, since with a streaming window size is 1, there is no assumed relationship between successive sensor fusion vectors. This means that Amber is essentially doing pattern recognition, rather than time series analysis.
+
+**Streaming Windows Size greater than 1:** While less common, there may be situations where the temporal relationship between successive sensor fusion vectors has diagnostic meaning. This would occur, for example, with a high sample rate and where the ongoing *change* in the relationships between sensor was important. In these situations, the streaming window size can be set to values larger than 1. With this configuration, Amber is doing sensor fusion analysis across a *streaming window* of successive sensor fusion vectors, and Amber becomes a powerful tool for doing multi-variate time series analysis. Because the time series of values creates the total pattern that is processed by Amber, it is important that the period between sensor fusion vectors is consistent.
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-c3ow"></th>
+    <th class="tg-c3ow">Streaming Window Size = 1</th>
+    <th class="tg-c3ow">Streaming Window Size &gt; 1</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-c3ow">Number of Features = 1</td>
+    <td class="tg-c3ow">Not meaningful</td>
+    <td class="tg-c3ow">Single-sensor streaming&lt;br&gt;(Common Configuration)</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">Number of Features &gt; 1</td>
+    <td class="tg-c3ow">Sensor fusion pattern matching&lt;br&gt;(Common Configuration)</td>
+    <td class="tg-c3ow">Multi-variate time series&lt;br&gt;(Less Common Configuration)</td>
+  </tr>
+</tbody>
+</table>
 
 
 
 
 ## <a name="Data_Input_Recommendations"></a>Data Input Recommendations
+
+### Confounding Features
+Constant, monotonic
+
+
+### Missing Data
+
+
+
+### Non-Numeric Data
+
+
+
+### Effects of Noise
 
 
 
