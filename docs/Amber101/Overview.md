@@ -17,28 +17,15 @@
  - *[Missing Data and Variable Sample Rates](#Missing)*
  - *[Categorical Data](#Categorical)*
 
-## Extended Example (Allen Bradley Motors)
+* **[Understanding Amber Outputs](#Amber_Outputs)**
 
-* **Cluster Growth**: Show cluster growth
+* **Examples**
 
-* **Cluster ID**: Show cluster ID
-
-* **Cluster Size**: Show cluster size histogram
-
-* **The Anomaly Index**: Computation of the anomaly index
-
-* **AD (Anomaly Detection)**: Anomaly threshold and detection
-
-* **AH (Anomaly History)**: Anomaly history
-
-* **AS (Anomaly Standard Deviation) and AW (Amber Warning Level)**: Anomaly history
-
-* **Example 1: Single-Sensor Processing (Allen Bradley Motors)**: Rockwell data set
-
-* **Example 2: Single-Sensor Processing (Vibrational Anomalies)**: Rockwell data set
+  - *[Single-Sensor Example](#Single_Sensor_Time_Series)*
+  - *[Multi-Sensor Example](#SensorFusionExample/SensorFusionExample.md)*
 
 ## <a name="Intro"></a>Introduction
-Amber is a real-time, predictive analytics platform that uses unsupervised machine learning to build high-dimensional models that are individualized to each asset being monitored. Typical assets include include pumps, generators, engines, boilers, etc. However, an **asset** can be broadly defined as any entity with *temporally correlated* measurements that define its operating state. With this definition we can broaden our list of assets.
+Amber is a real-time, predictive analytics platform that uses unsupervised machine learning to build high-dimensional models that are individualized to each asset being monitored. Typical assets include include pumps, generators, engines, boilers, etc. However, an **asset** can be broadly defined as any entity with *correlated* measurements that define its operating state. With this definition we can broaden our list of assets.
 
 * Motors, pumps, generators: temporally-correlated vibration (FFTs for instance), current, voltage, temperature
 * Production processes: temporally-correlated units per minute, rejects per minute, average pH, airflow, robotic motion profiles, etc.
@@ -188,6 +175,26 @@ Many sensor applications will include non-numerical data that describes a *state
 
 # Old Stuff
 
+
+## Extended Example (Allen Bradley Motors)
+
+* **Cluster Growth**: Show cluster growth
+
+* **Cluster ID**: Show cluster ID
+
+* **Cluster Size**: Show cluster size histogram
+
+* **The Anomaly Index**: Computation of the anomaly index
+
+* **AD (Anomaly Detection)**: Anomaly threshold and detection
+
+* **AH (Anomaly History)**: Anomaly history
+
+* **AS (Anomaly Standard Deviation) and AW (Amber Warning Level)**: Anomaly history
+
+* **Example 1: Single-Sensor Processing (Allen Bradley Motors)**: Rockwell data set
+
+* **Example 2: Single-Sensor Processing (Vibrational Anomalies)**: Rockwell data set
 
 
 
