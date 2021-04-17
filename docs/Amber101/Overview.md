@@ -140,56 +140,42 @@ It is worth noting in Figure HHH, that the period between sensor fusion vectors 
 
 **Streaming Windows Size greater than 1:** While less common, there may be situations where the temporal relationship between successive sensor fusion vectors has diagnostic meaning. This would occur, for example, with a high sample rate and where the ongoing *change* in the relationships between sensor was important. In these situations, the streaming window size can be set to values larger than 1. With this configuration, Amber is doing sensor fusion analysis across a *streaming window* of successive sensor fusion vectors, and Amber becomes a powerful tool for doing multi-variate time series analysis. Because the time series of values creates the total pattern that is processed by Amber, it is important that the period between sensor fusion vectors is consistent.
 
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
-</style>
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-c3ow"></th>
-    <th class="tg-c3ow">Streaming Window Size = 1</th>
-    <th class="tg-c3ow">Streaming Window Size &gt; 1</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-c3ow">Number of Features = 1</td>
-    <td class="tg-c3ow">Not meaningful</td>
-    <td class="tg-c3ow">Single-sensor streaming&lt;br&gt;(Common Configuration)</td>
-  </tr>
-  <tr>
-    <td class="tg-c3ow">Number of Features &gt; 1</td>
-    <td class="tg-c3ow">Sensor fusion pattern matching&lt;br&gt;(Common Configuration)</td>
-    <td class="tg-c3ow">Multi-variate time series&lt;br&gt;(Less Common Configuration)</td>
-  </tr>
-</tbody>
-</table>
-
-
+<img src="Figures/MultiAndSWSTable.png" width="500">
 
 
 ## <a name="Data_Input_Recommendations"></a>Data Input Recommendations
 
 ### Confounding Features
-Constant, monotonic
+It is not uncommmon for there to be sensor values streaming from an asset that can partially confound the ML model. Amber is quite tolerant of these types of features in a sensor fusion vector, but whenever possible they should be removed to provide the most relevant and representative measurements of asset states possible in training Amber.
 
+**Constant Features** are commonly seen when an asset has a feature that never changes (e.g. a constant "1" indicating the asset is running in mode 1). They may also indicate a misconfigured sensor or a malfunctioning sensor. Amber can tolerate some of these in a sensor fusion vector although they have a roughly proportional effect in the model accuracy. For instance, if there are ten features with equal weights and one of them is constant, then when matching the pattern for that sensor there is already a 10 percent match between any two vectors in the model. If a feature is truly constant in all situations, it should not be included in the sensor fusion vector. However, if it describes something descriptive of the asset (for instance, run mode = 1, run mode = 2, etc.) then it may be desireable to include it.
 
-### Missing Data
+**Noise in the Signal** Noise is typical in real-world sensor data and Amber accounts for this naturally in building its ML models with no loss of accuracy. In extreme cases, a misconfigured or malfunctioning sensor may be generating so much noise that the underlying signal is lost. If that feature is included in an Amber sensor fusion vector, its effect will depend on the number of other coherent features in the sensor fusion vector. If it is only one alongside, say, 10 other coherent features then Amber will still generate an accurate model of the asset. In practice, such a feature should be excluded or cleaned up to optimize the detection performance of Amber.
 
+**Monotonic Features** A common monotonically increasing feature of many assets is "hours of operation". While this measurement is useful for preventative maintenance schedules, it is not helpful for the predictive analytics of Amber. A monotonically increasing feature in a sensor fusion vector makes it appear as if every sensor fusion vector is new, thus biasing Amber to generate anomalies. Monotonic features (whether increasing or decreasing) should not be included in sensor fusion vectors processed by Amber. 
 
+### Redundant and Poorly Correlated Features
+A typical step when using traditional anomaly detection techniques is to remove redundant and poorly correlated features. This is done to reduce the computational load in building and inferencing from the model and also to improve the accuracy of the model. For the same reason, it is typical to try to remove poorly correlated features and to include only the top, say, 10 diagnostic features out of perhaps hundreds of available asset features. This data science exercise requires many engineering hours studying covariance, principal components, training set correlations, and the like. Amber is very tolerant of redundant features and poorly correlated features. First of all, whether 10 or 100 are included in a sensor fusion vector, Amber's inference time is consistent. This means that redundant features can be included without affecting the speed of the detector. Second, Amber will use whatever information is avaiable in a poorly correlated feature to improve the accuracy of the resulting model. If it has no correlation whatsoever to the asset behavior, then it should be treated like a noise feature (described above).
 
-### Non-Numeric Data
+### Missing Data and Variable Sample Rates
+**Streaming Window Size = 1** Amber processes only numeric data. An Amber sensor fusion configuation includes the number of features, so Amber will reject incoming sensor fusion vectors with fewer than the configured number of values. Having said that, we know that certain types of sensors will fail to produce data on every sampling cycle. It is also common for sensors to produce samples at different rates. For instance, temperature sensors may be sampled very slowly and current or vibration sensors at higher sample rates (Figure III). Coping with this reality is within the scope any data analyses and not limited to Amber. However, we mention two standard approaches: *upsampling* slowly sampled features and *downsampling* features with high relative sample rates. 
 
+<table class="table">
+  <tr>
+    <td><img src="Figures/upsample_downsample.png" width="800"></td>  
+  </tr>
+  <tr>
+    <td><em>Figure III: (a) shows data sensor fusion vectors with variable sample rates and two errors. (b) shows one approach to upsampling temperature (foward-filling). (c) shows a downsampling approach where the sensor fusion vector are dropped where there are missing values or error values. Only the highlighted values will be sent to Amber.</em></td>
+  </tr>
+</table>
 
+Upsampling can be done via forward-filling or interpolation. Upsampling slowly sampled features (Figure III(b)) is reasonable for features like temperature that change slowly. Upsampling to fill "Error" values of a quickly sampled feature is less advisable. Downsampling means dropping selected sensor fusion vectors (Figure III(c)). For example, sensor fusion vectors with sporadic error values may be dropped without significantly affecting the accuracty of the Amber model. Upsampling is generally preferable to downsampling.
 
-### Effects of Noise
+**Streaming Window Size > 1**
+When the streaming window size is greater than one, Amber uses the temporal relation between successive samples in building its ML model. In such situations, upsampling and downsampling are only advisable if a consistent sample period between succussive value can be maintained. The most important example of this is for single-sensor streaming where there is a one sensor producing an consistently sampled time series of values (Figure GGG). In this case, downsampling via dropping just the sporadic error values is not good practice as it changes the pattern that Amber consumes. In this scenario, some anomalies may be generated until the error/missing value is clear of the configured streaming window.
 
-
+### Categorical Data
+Many sensor applications will include non-numerical data that describes a *state* or *operational mode* of the asset. For instance, a string might indicate the type of material being processed ("sand", "concrete", "gravel") or it might indicate a mode of operation ("high-speed forward", "low-speed reverse"). This type of data is called *categorical* because it indicate some discrete finite set of values rather than a continuum of magnitudes. Categorical data cannot be processed directly by Amber until it has been transformed into numeric values. If there are two categories (such as "low speed" and "high speed"), they can be replaced by a 0 and 1 and Amber will be able to use them for building its model. If there are three or more categories, there may still be a reasonable way to assign an ordering to them (such as replacing "low", "medium", "high" with 0, 1, and 2). If there are more than two categories and they cannot be meaningfully ordered as magnitudes ("water", "silt", "slurry", "powder") they may still be replaced with numerical values, but the particular ordering chosen will create a slight bias in the n-space segmentation of the sensor fusion vectors as the model is built. 
 
 
 #Old Stuff
