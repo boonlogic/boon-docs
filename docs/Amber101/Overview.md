@@ -22,7 +22,7 @@
 * **Examples**
 
   - *[Single-Sensor Example](#Single_Sensor_Time_Series)*
-  - *[Multi-Sensor Example](#./SensorFusionExample/SensorFusionExample.md)*
+  - *[Multi-Sensor Example](SensorFusionExample/SensorFusionExample.md)*
 
 ## <a name="Intro"></a>Introduction
 Amber is a real-time, predictive analytics platform that uses unsupervised machine learning to build high-dimensional models that are individualized to each asset being monitored. Typical assets include include pumps, generators, engines, boilers, etc. However, an **asset** can be broadly defined as any entity with *correlated* measurements that define its operating state. With this definition we can broaden our list of assets.
