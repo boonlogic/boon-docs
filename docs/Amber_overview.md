@@ -20,39 +20,6 @@ The Boon Amber detects anomalies in input data by assigning each pattern a scala
 
 Anomaly index values range from 0 to 1000, with values closer to 0 representing input patterns which are ordinary given the data seen so far on this sensor. Values closer to 1000 represent novel patterns which are anomalous with respect to data seen before. The anomaly index is derived from a clustering of the data stream produced by the Boon Nano, Boon Logic's proprietary clustering algorithm. Patterns assigned to "large" clusters, or clusters to which other patterns are frequently assigned, are considered less anomalous, while patterns assigned to "small" clusters represent anomalies as these patterns occupy infrequently explored regions of data space. A pattern which creates an entirely new cluster is maximally anomalous and receives an anomaly index of 1000. For more detail on the Boon Nano clustering algorithm see [Clustering with the Boon Nano](../docs/Intro_to_Clustering.md).
 
-### Configuration: data dimensions
-
-The Boon Amber takes a number of different configuration parameters. The first two, **featureCount** and **streamingWindowSize**, determine the "height" (number of rows) and "width" (number of features) of the data to be ingested by the model.
-
-* **featureCount** A pattern is comprised of **features** which represent the properties of each column in the vectors to be processed. This feature count parameter should be set to the number of features in input patterns.
-
-* **streamingWindowSize:** This indicates the number of successive samples to use in creating overlapping patterns. For instance, it is typical in single-sensor streaming mode applications to have only one feature and a streaming window size greater than 1. If there is one feature, and the streaming window size is 25, then each pattern clustered by the Nano is comprised of the most recent 25 values from the sensor. In this case, each pattern overlaps 24 samples with its predecessor and each newly arriving sample slides the moving window over by one.
-
-### Configuration: autotuning
-
-The Boon Amber makes use of the Boon Nano algorithm which requires two clustering hyperparameters: the percent variation between clusters, and a min/max range for each input feature. The first hyperparameter, percent variation, determines the *n*-space distance threshold beyond which two samples are considered as belonging in separate clusters. All else held equal, a higher percent variation setting segments data into fewer clusters which are more spread out, while a lower percent variation segments data into a greater number of clusters closer together.
-
-One of the most difficult parameters to configure in unsupervised machine learning is the desired number of clusters needed to produce the best results (as with K-means) or (in the case of the Boon Nano) the desired percent variation to use. This is because one would not generally know *a priori* the underlying proximity structure of the input vectors to be segmented.
-
-To address this, the Boon Nano can automatically tune its percent variation to create a balanced combination of **coherence within clusters** and **separation between clusters**. This process is called **autotuning** and occurs automatically when a sufficient amount of initial data has been collected. In nearly all cases, autotuning produces the best value for the percent variation setting. In addition to setting the percent variation, autotuning sets the min/max parameters for each feature as well.
-
-### Configuration: streaming
-
-In its default configuration, Amber returns one *analytic* value for each *sensor* value sent into it. The typical analytic value is the smoothed anomaly index (SI) (described below), but other outputs can be included as well. The streaming window size selected in the clustering configuration (described above) is a key parameter as it determines the amount of sensor value "history" that will be included in each pattern to be clustered.
-
-As sensor values are streamed into it, Amber transitions automatically through four phases: buffering, autotuning, learning, and monitoring.
-
-* **Buffering:** As the first sensor samples are sent to Amber, there is not sufficient data to return meaningful analytic results. A 0 is returned as the anomaly index for each sensor value sent. Eventually, sufficient samples will have been acquired to move to the autotuning phase (e.g. 1000 samples may be sufficient).
-* **Autotuning:** Using the autotuning configuration (described above) and the sensor samples buffered thus far, the Boon Nano hyperparameters (percent variation and feature min/maxes) are tuned to optimal values for this sensor. During autotuning, Amber continues to return zeros as the anomaly index corresponding to the incoming sensor values.
-* **Learning:** Amber configures the Boon Nano with the parameters found during autotuning and then starts training the Nano with the samples that have been buffered thus far. In this phase, the Boon Nano is adding clusters as needed to build a high-dimensional analytic model that describes the sensor input and that conforms to the clustering configuration (described above). There is sufficient data in this phase to return real analytic outputs for each sensor sample sent in. Part of the streaming configuration determines when learning stops, called **graduation**. Graduation occurs automatically based on a number of graduation requirements (described below). In principle, learning can continue indefinitely, but it is usually desirable to automatically turn off learning upon graduation so that no new clusters are created. This solidifies the model so that the future analytics results retain their same meaning over many months of operation.
-* **Monitoring:** The final phase of Amber is the monitoring phase where learning has been turned off. Each sensor value sent in becomes the final sample in the streaming window of prior samples. That window is clustered by the Boon Nano in real-time and the result returned as the Amber analytic value for that sample.
-
-The streaming configuration is defined by the following parameters:
-
-* **samplesToBuffer:** Incoming sensor samples will be buffered until samplesToBuffer have been collected at which time autotuning begins on the buffered sensor data. Autotuning will typically require approximately 200 more sensor values to complete. Once autotuning is complete, then Amber uses the autotuned ranges and percent variation to configure the Nano.
-* **learningMaxClusters (graduation requirement):** If during the learning phase, the Nano has a total of learningMaxClusters clusters in its model, then learning is automatically turned off.
-* **learningMaxSamples (graduation requirement):** If during the learning phase, the Nano has processed a total of learningMaxSamples sensor samples, then learning is automatically turned off.
-* **learningRateNumerator** and **learningRateDenominator (graduation requirements):** As learning progresses, clusters are added. As the model matures, the growth in the cluster count slows as the Boon Nano has created clusters that account for nearly all of the variation in the input data. The ratio learningRateNumerator divided by learningRateDenominator determines a cluster growth "flatness" threshold. If during the most recent learningRateDenominator inferences, there have been fewer than learningRateNumerator new clusters created, then learning is automatically turned off.
 
 ## Streaming results
 
