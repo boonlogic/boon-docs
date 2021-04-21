@@ -11,8 +11,9 @@
 
 * **[Configuring Amber](#Configuring_Amber)**
 
+ - *[Single-Feature Versus Multi-Feature Processing](#Configuring_Amber)*
  - *[Single-Feature Processing](#Single_Feature)*
- - *[Multi-Feature Processing](#Multi_Feature)*
+ - *[Multi-Feature Processing (Sensor Fusion)](#Multi_Feature)*
  - *[Configuration Parameters](#Config_Params)*
 
 * **[Amber Input Data Recommendations](#Data_Input_Recommendations)**
@@ -23,9 +24,9 @@
  - *[Categorical Data](#Categorical)*
 
 * **[Amber Training Recommendations](#Training_Recommendations)**
- - *[The Autotuning Buffer](#Autotuning_Buffer")*
- - *[The Training Buffer](#Training_Buffer")*
- - *[Anomalies During Training](#nomalies_During_Training")*
+ - *[The Autotuning Buffer](#Autotuning_Buffer)*
+ - *[The Training Buffer](#Training_Buffer)*
+ - *[Anomalies During Training](#Anomalies_During_Training)*
 
 * **[Amber Outputs](#Amber_Outputs)**
  - *[(ID) Cluster ID](#ID)*
@@ -40,7 +41,7 @@
   - *[Anomaly Detection in a Single-Sensor Asset](Single_Sensor_Example/TimeSeries.md)*
   - *[Anomaly Detection in a Multi-Sensor Asset](SensorFusionExample/SensorFusionExample.md)*
 
-## <a name="Intro"></a>Introduction
+## <a name="Intro"></a>Introduction to Amber
 Amber is a real-time, predictive analytics platform that uses unsupervised machine learning to build high-dimensional models that are individualized to each asset being monitored. Typical assets include include pumps, generators, engines, boilers, etc. However, an **asset** can be broadly defined as any entity with *correlated* measurements that define its operating state. With this definition we can broaden our list of assets.
 
 * Motors, pumps, generators: correlated vibration (FFTs for instance), current, voltage, temperature
@@ -50,6 +51,8 @@ Amber is a real-time, predictive analytics platform that uses unsupervised machi
 * Video streams: correlated features within each frame and also the time series correlation across successive frames
 
 ## <a name="Operation"></a>Operational Overview
+
+### Amber Training Phases
 
 * **User Configuration:** Amber begins with a domain expert for the asset determining which asset sensor values will be used by Amber to monitor its operation (Figure 1).
 
@@ -70,7 +73,7 @@ As asset data is streamed into Amber, Amber transitions *automatically* through 
 
 <table class="table">
   <tr>
-    <td><img src="Figures/LearningCurve.png" width="800"></td>
+    <td><img src="Figures/LearningCurve.png" width="400"></td>
   </tr>
   <tr>
     <td><em>Figure 2: The horizontal axis of the Amber Learning Curve shows the number of asset values that have been sent to Amber. The vertical axis shows the number of clusters in the model. Notice that as more asset data is provided to Amber the learning slows and eventually levels off.</em></td>
@@ -79,7 +82,7 @@ As asset data is streamed into Amber, Amber transitions *automatically* through 
 
 * **Monitoring:** The final phase of Amber is monitoring. In Monitoring mode, the Amber model customized for the asset is complete and Amber learning is turned off. Asset data sent into Amber is processed through the asset model, and the full Amber analytic results corresponding to the incoming asset data are returned in real-time.
 
-## <a name="Operation_Example"></a>Amber Training Example
+### <a name="Operation_Example"></a>Amber Training Example
 Figure 3 shows an example of Amber training for a motor asset. Five features were chosen by the subject matter expert for this motor to represent its operational states (more detail is given in [this example](SensorFusionExample/SensorFusionExample.md)). From sample 1 through 10,000 we see the Amber Buffering stage described above. Nothing is happening inside of Amber during this period except that Amber is collecting the asset samples and waiting until the configured number of samples has been acquired. (More detail on configuration of Amber and Amber training is included below.) 
 
 <table class="table">
@@ -179,7 +182,7 @@ Let's take as an example the current draw from a motor, acquired by reading a PL
 
 Once a streaming window size is chosen, then Amber will "slide" the window along the incoming time series. With each incoming sample, Amber processes a new streaming window ending with that new sample. Thus, successive streaming windows overlap on all but their first and last samples. For each streaming window, Amber generates a complete set of analytic outputs. Because the time series determines each pattern that is processed by Amber, it is important that the period between samples is consistent.
 
-#### <a name="Multi_Feature"></a>Multi-Feature Processing
+#### <a name="Multi_Feature"></a>Multi-Feature Processing (Sensor Fusion)
 **Streaming Windows Size equal to 1:** The simplest type of multi-feature processing is with a streaming window size of 1. In this case, each collection of features from the asset is collected at the same moment in time and assembled into a single sensor fusion vector that describes relationship between those asset features at that moment in time (Figure 11).
 
 <table class="table">
