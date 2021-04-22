@@ -13,7 +13,7 @@
 
 ## <a name="BoonNano"></a>The Boon Nano: The Core Technology
 
-[Clustering with the Boon Nano](docs/Intro_to_Clustering.md)
+[Introduction to the Boon Nano](docs/NanoDocs/Overview.md#Intro)
 
 ## <a name="Amber"></a>Amber: Streaming Analytics
 **[Introduction to Amber](docs/AmberDocs/Overview.md/#Intro)**
