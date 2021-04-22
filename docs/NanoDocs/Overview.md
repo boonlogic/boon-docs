@@ -36,7 +36,7 @@ The Boon Nano clusters its input data by assigning to each pattern an integer ca
   </tr>
 </table>
 
-The Boon Nano is deployed in both a general-use platform called [Expert Console](../../../Readme.md/#Expert) and as a streaming sensor analytics application called **Amber**
+The Boon Nano is deployed in both a general-use platform called [Expert Console](../../README.md/#Expert) and as a streaming sensor analytics application called **Amber**
 * **Expert:** The Expert console provides the full functionality of the Boon Nano including all analytics (described below) and is oriented toward batch processing of input data.
 * **Amber:** By specializing the Expert console for real-time streaming data, Amber provides an easy-to-use interface for sending streams of successive sensor values as a time series and getting back analytic values that correspond one-for-one to the sensor values. These analytic values are typically used for anomaly detection in the sensor stream.   
 
