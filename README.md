@@ -16,7 +16,7 @@
 [Clustering with the Boon Nano](docs/Intro_to_Clustering.md)
 
 ## Amber: Streaming Analytics
-* **[Introduction to Amber](docs/AmberDocs/Overview.md#Intro)**
+* **[Introduction to Amber](docs/AmberDocs/Overview.md/#Intro)**
 
 * **[Operational Overview](docs/AmberDocs/Overview.md/#Operation)**
  - *[Amber Training Phases](docs/AmberDocs/Overview.md/#Operation)*
