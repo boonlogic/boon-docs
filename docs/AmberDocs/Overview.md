@@ -34,20 +34,11 @@ As asset data is streamed into Amber, Amber transitions *automatically* through 
     <td><img src="images/LearningCurve.png" width="400"></td>
   </tr>
   <tr>
-    <td><em>Figure 3: The horizontal axis of the Amber Learning Curve shows the number of asset values that have been sent to Amber. The vertical axis shows the number of clusters in the model. Notice that as more asset data is provided to Amber the learning slows and eventually levels off.</em></td>
+    <td><em>Figure 2: The horizontal axis of the Amber Learning Curve shows the number of asset values that have been sent to Amber. The vertical axis shows the number of clusters in the model. Notice that as more asset data is provided to Amber the learning slows and eventually levels off.</em></td>
   </tr>
 </table>
 
 * **Monitoring:** The final phase of Amber is monitoring. In Monitoring mode, the Amber model customized for the asset is complete and Amber learning is turned off. Asset data sent into Amber is processed through the asset model, and the full Amber analytic results corresponding to the incoming asset data are returned in real-time.
-
-<table class="table">
-  <tr>
-    <td><img src="images/amber_training.png" width="800"></td>
-  </tr>
-  <tr>
-    <td><em>Figure 4: Amber training showing single-sensor input and the corresponding Amber output for the SI (Anomaly Index) output. Note that zero is returned as the analytic result until autotuning is complete. </em></td>
-  </tr>
-</table>
 
 ### <a name="Operation_Example"></a>Amber Training Example
 Figure 3 shows an example of Amber training for a motor asset. Five features were chosen by the subject matter expert for this motor to represent its operational states (more detail is given in [this example](SensorFusionExample/SensorFusionExample.md)). From sample 1 through 10,000 we see the Amber Buffering stage described above. Nothing is happening inside of Amber during this period except that Amber is collecting the asset samples and waiting until the configured number of samples has been acquired. (More detail on configuration of Amber and Amber training is included below.) 
@@ -62,6 +53,17 @@ Figure 3 shows an example of Amber training for a motor asset. Five features wer
 </table>
 
 After the 10,000th sample has been acquired Amber begins a search for optimal hyperparamaters that will determine the dimensionality and granularity of the model that will be created in the next phase (Learning). While Amber is searching for those hyperparameters, it continues to buffer data as it is fed in. Once they are found, Amber and configures itself to begin the Learning phase where it will build its model of normal variation for this particular asset. Amber primes the learning by using the data from the Buffering stage to build a model up to and through all of the samples that have been acquired from the asset thus far. When the Learning Curve (Figure 2) is sufficiently flat, Amber declares that the model is mature enough to transition to the long-term monitoring stage. At this point the model does not change and the anomaly detector is ready for operation.
+
+Figure 4 shows an example of Amber training on single-sensor. For this example, we also show one of the outputs of Amber (SI, the smoothed anomaly index) that gets returned. Each sensor sample sent into Amber receives a single Amber SI analytic result in that corresponds to it. As shown, during the Buffering and Autotuning phases the value 0 is returned since the hyperparameters of Amber have not yet been set.
+
+<table class="table">
+  <tr>
+    <td><img src="images/amber_training.png" width="800"></td>
+  </tr>
+  <tr>
+    <td><em>Figure 4: Amber training showing single-sensor input and the corresponding Amber output for the SI (Anomaly Index) output. Note that zero is returned as the analytic result until autotuning is complete. </em></td>
+  </tr>
+</table>
 
 ## <a name="Definitions"></a>Definitions and Terminology
 
