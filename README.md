@@ -13,7 +13,20 @@
 
 ## <a name="BoonNano"></a>The Boon Nano: The Core Technology
 
-[Introduction to the Boon Nano](docs/NanoDocs/Overview.md#Intro)
+**[Introduction to the Boon Nano](docs/NanoDocs/Overview.md#Intro)**
+
+**[Examples of Patterns](docs/NanoDocs/Overview.md#ExamplePatterns)**
+
+**[Using the Boon Nano](docs/NanoDocs/Overview.md#Using)**
+
+**[Configuring the Boon Nano](docs/NanoDocs/Overview.md#Configuration)**
+
+**[Clustering Results](docs/NanoDocs/Overview.md#Results)**
+
+**[Nano Status: Accessing the Current Nano Model](docs/NanoDocs/Overview.md#NanoStatus)**
+
+**[Example](docs/NanoDocs/Overview.md#Example)**
+
 
 ## <a name="Amber"></a>Amber: Streaming Analytics
 **[Introduction to Amber](docs/AmberDocs/Overview.md/#Intro)**

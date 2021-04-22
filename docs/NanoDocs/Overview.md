@@ -36,22 +36,19 @@ The Boon Nano clusters its input data by assigning to each pattern an integer ca
   </tr>
 </table>
 
-The Boon Nano is deployed in both a general-use platform called [Expert Console](../../README.md/#Expert) and as a streaming sensor analytics application called **Amber**
-* **Expert:** The Expert console provides the full functionality of the Boon Nano including all analytics (described below) and is oriented toward batch processing of input data.
-* **Amber:** By specializing the Expert console for real-time streaming data, Amber provides an easy-to-use interface for sending streams of successive sensor values as a time series and getting back analytic values that correspond one-for-one to the sensor values. These analytic values are typically used for anomaly detection in the sensor stream.   
+The Boon Nano is deployed in both a general-use platform called [Expert Console](../../README.md/#Expert) and as a streaming sensor analytics application called [Amber](../../README.md/#Amber) 
+* **Expert Console:** The Expert console provides the full functionality of the Boon Nano including all analytics (described below) and is oriented toward batch processing of input data.
+* **Amber:** Amber is a specialized interface for the Nano designed for real-time streaming data. Amber provides an easy-to-use interface for sending streams of successive sensor values as a time series and getting back analytic values that correspond one-for-one to the sensor values. These analytic values are typically used for anomaly detection in the sensor stream.   
 
-## Configuring the Boon Nano
-
-### Batch Mode vs. Streaming Mode
-* **clusterMode (batch or streaming):** The Boon Nano can be operated in batch mode or streaming mode depending on the application. In **batch mode**, successive patterns clustered by the Nano are not assumed to have any temporal relationship. For instance, segmentation of tissue types from a DICOM CT scan uses batch mode. Anomaly detection for quality control using camera images of standard units on a manufacturing line uses batch mode. In **streaming mode**, it assumed that successive patterns are temporally related and they typically overlap. Examples of streaming mode data would be overlapping, successive windows of single-sensor data or successive sensor fusion patterns coming off multiple related sensors in real-time. 
+## <a name="Configuration"></a>Configuring the Boon Nano
 
 ### Clustering Configuration
 The Boon Nano uses the clustering configuration to determine the properties of the model that will be built for the input data.
 
 * **numericType:** One numeric type is chosen to apply to all of the features in each input vector. A good default choice for numeric type is float32, which represents 32-bit, IEEE-standard, floating-point values. In some cases, all features in the input data are integers ranging from -32,768 and 32,767 (int16) or non-negative integers ranging from 0 to 65,535 (uint16), for instance, bin counts in a histogram. Using these integer types may give slightly faster inference times, however, float32 performance is usually similar to the performance for the integer types. For nearly all applications, float32 is a good general numeric type to use.
 * **Feature List:** A pattern is comprised of **features** which represent the properties of each column in the vectors to be clustered. Each feature has a **range** (a min and max value) that represents the expected range of values that feature will take on in the input data. This range need not represent the entire range of the input data. For example, if the range of a feature is set to -5 to 5, then values greater than 5 will be treated as if they were 5 and value less than -5 will be treated as -5. This truncation (or outlier filtering) can be useful in some data sets. Each feature is also assigned a **weight** between 0 and 1000 which determines its relative importance in assignment of patterns into clusters. Setting all weights to 1 is a common setting, which means all features are weighted equally. Setting a weight to 0 means that feature is ignored in clustering as if it were not in the vector at all. Finally, each feature can be assigned an optional user-defined **label** (for example, "systolic", "pulse rate", "payload length", "output current"). Labels have no effect on the clustering.  
-* **percentVariation:** The percent variation setting ranges from 1% to 20% and determines the degree of similarity the Nano will require between patterns assigned to the same cluster. Smaller percent variation settings create more clusters with each cluster having more similarity between patterns assigned it. A larger choice for percent variation produces coarser clustering with fewer clusters.
-* **streamingWindowSize:** This indicates the number of successive samples to use in creating overlapping patterns. For instance, it is typical in single-sensor streaming mode applications to have only one feature and a streaming window size greater than 1. If there is one feature, and the streaming window size is 25, then each pattern clustered by the Nano is comprised of the most recent 25 values from the sensor. In this case, each pattern overlaps 24 samples with its predecessor. In batch mode, it is typical to use a streaming window size of 1.
+* **percentVariation:** The percent variation setting ranges from 1.0% to 20.0% and determines the degree of similarity the Nano will require between patterns assigned to the same cluster. Smaller percent variation settings create more clusters with each cluster having more similarity between patterns assigned it. A larger choice for percent variation produces coarser clustering with fewer clusters.
+* **streamingWindowSize:** This indicates the number of successive samples to use in creating overlapping patterns. For instance, it is typical in single-sensor streaming mode applications to have only one feature and a streaming window size greater than 1. If there is one feature, and the streaming window size is 25, then each pattern clustered by the Nano is comprised of the most recent 25 values from the sensor. In this case, each pattern overlaps 24 samples with its predecessor. In batch mode, it is typical to use a streaming window size of 1. (See [Amber](../../README.md/#Amber) for additional details.)
 <table class="table">
   <tr>
     <td><img src="images/streaming_window.png" width="800"></td>
@@ -60,7 +57,6 @@ The Boon Nano uses the clustering configuration to determine the properties of t
     <td><em>Figure 3: One feature (all samples from the same sensor) and streaming window size of 25. Each input vector is 25 successive samples where we form successive patterns by dropping the oldest sample from the current pattern and appending the next sample from the input stream.</em></td>
   </tr>
 </table>
-
 
 ### Autotuning Configuration
 Two clustering parameters, the percent variation and the range for each feature, can be *autotuned*, that is, chosen automatically, by the Boon Nano prescanning representative data. The range for each feature can be autotuned either individually or a single range can be autotuned to apply to all features. 
@@ -74,33 +70,7 @@ To address this, the Boon Nano can automatically tune its percent variation to c
 * **autotuneByFeature:** If this is set to true and the option to autotune the range is set to true, then the autotuning will find a range customized to each feature. If false, then autotuning will find a single range that applies to all features.
 * **exclusions:** An array of exclusions may be provided which causes the autotuning to ignore those features. For instance, if the array [2 7] is provided, then autotuning is applied to all features except the 2nd and 7th features. An empty exclustions array, [ ], means that no features will be excluded in the autotuning.
 
-### Streaming Configuration (Amber Only)
-Streaming parameters apply to the Amber deployment of the Boon Nano. If streaming mode is selected in the configuration, then a variety of parameters determines the analytic values returned corresponding to the sensor samples sent into Amber. In its default configuration, Amber returns one *analytic* value for each *sensor* value sent into it. The most typical analytic value is the smoothed anomaly index (SI) (described below), but other outputs can be selected. The streaming window size selected in the clustering configuration (described above) is a key parameter as it determines the amount of sensor value "history" that will be included in each pattern to be clustered.
-
-As sensor values are streamed into it, Amber transitions automatically through four phases: starting, autotuning, learning, and monitoring.
-
-<table class="table">
-  <tr>
-    <td><img src="images/amber_training.png" width="800"></td>
-  </tr>
-  <tr>
-    <td><em>Figure 4: The Amber application of the Boon Nano trains itself autonomously based on the real-time data it is acquiring. It builds a buffere of representative data, tunes its hyperparameters and then start segmenting and assinging anomaly indexes to each sensor sample.</em></td>
-  </tr>
-</table>
-
-* **Starting:** As the first sensor samples are sent to Amber, there is not sufficient data to return meaningful analytic results. A 0 is returned as the Amber analytic for each sensor value sent. Eventually, a sufficient samples will have been acquired to move to the autotuning phase (e.g. 1000 samples may be sufficient).
-* **Autotuning:** Using the autotuning configuration (described above) and the sensor samples buffered thus far, tune the Boon Nano hyperparameters (feature ranges and percent variation) to optimal values for this sensor. During autotuning, Amber continues to return zeros as the anomaly index corresponding to the incoming sensor values.
-* **Learning:** Amber configures the Boon Nano with the parameters found during autotuning and then starts training the Nano with the samples that have been buffered thus far. In this phase, the Boon Nano is adding clusters as needed to build a high-dimensional analytic model that describes the sensor input and that conforms to the clustering configuration (described above). There is sufficient data in this phase to return real analytic outputs for each sensor sample sent in. Part of the streaming configuration determines when learning stops, called **graduation**. Graduation occurs automatically based on a number of graduation requirements (described below). In principle, learning can continue indefinitely, but it is usually desirable to automatically turn off learning upon graduation so that no new clusters are created. This solidifies the model so that the future analytics results retain their same meaning over many months of operation.
-* **Monitoring:** The final phase of Amber is the monitoring phase where learning has been turned off. Each sensor value sent in becomes the final sample in the streaming window of prior samples. That window is clustered by the Boon Nano in real-time and the result returned as the Amber analytic value for that sample.
-
-The streaming configuration is defined by the following parameters:
-* **enableAutotuning** and **samplesToBuffer:** If enableAutotuning is set to true, then incoming sensor samples will be buffered until samplesToBuffer have been collected at which time autotuning begins on the buffered sensor data. Autotuning will typically require approximately 200 more sensor values to complete. Once autotuning is complete, then Amber uses the autotuned ranges and percent variation to configure the Nano.
-* **learningGraduation:** If this is set to false, then learning continues indefinitely which means that clusters will continue to be added for patterns that cannot be placed into an existing cluster. Typically, it is set to true in which case the graduation requirements are used to automatically turn off learning if any of the graduation requirements is met.
-* **learningMaxClusters (Graduation Requirement):** If during the learning phase, the Nano has a total of learningMaxClusters clusters in its model, then learning is automatically turned off.
-* **learningMaxSamples (Graduation Requirement):** If during the learning phase, the Nano has processed a total of learningMaxSamples sensor samples, then learning is automatically turned off.
-* **Cluster Growth Slope (Graduation Requirement):** As learning progresses, clusters are added. As the model matures, the growth in the cluster count slows as the Nano has created clusters that account for nearly all of the variation in the input data. The ratio learningRateNumerator divided by learningRateDenominator determines a cluster growth "flatness" threshold. If during the most recent learningRateDenominator inferences, there have been fewer than learningRateNumerator new clusters created, then learning is automatically turned off.
-
-## Clustering Results
+## <a name="Results"></a>Clustering Results
 
 When a single pattern is assigned an cluster ID, this is called an *inference*. Besides its cluster ID, a number of other useful analytic outputs are generated. 
 
@@ -118,7 +88,7 @@ Building on the raw anomaly index, we create a **Smoothed Anomaly Index** which 
     <td><img src="images/anomaly_detection.png" width="800"></td>
   </tr>
   <tr>
-    <td><em>Figure 5: Raw sensor signal (Blue) and SI, the Smoothed Anomaly Index (Amber), showing a rarely occuring pattern in the sensor stream model.</em></td>
+    <td><em>Figure 4: Raw sensor signal (Blue) and SI, the Smoothed Anomaly Index (Amber), showing a rarely occuring pattern in the sensor stream model.</em></td>
   </tr>
 </table>   
 
@@ -129,46 +99,41 @@ Similar to the anomaly indexes, the **Frequency Index** measures the relative nu
 ### Distance Index (DI)
 The **Distance Index** measures the distance of each cluster template to the centroid of all of the cluster templates. This overall centroid is used as the reference point for this measurement. The values range from 0 to 1000 indicating that distance with indexes close to 1000 as indicating patterns furthest from the center and values close to 0 are very close. Patterns in a space that are similar distances apart have values that are close to the average distance between all clusters to the centroid.
 
-## Nano Status
-Whereas Nano Results (above) give specific analytic results for the patterns in the most recently processed sample buffer, **Nano Status** provides core analytics about the Nano itself and the current machine learning model that has been constructed since it was configured. The results are indexed by cluster ID beginning with cluster 0. 
+## <a name="NanoStatus"></a>Nano Status: Accessing the Current Nano Model
 
-### clusterSizes
-In learning mode, the values in this list give the number of patterns that have been assigned to each cluster beginning with cluster 0. When learning is turned off, this value does not change.
+While Nano Results (previous section) give specific analytic results for the patterns in the most recently processed sample buffer, **Nano Status** provides core analytics about the Nano itself and the current machine learning model that has been constructed since it was configured. The results are indexed by cluster ID beginning with cluster 0. 
 
 ### anomalyIndexes 
 The values in this list give raw anomaly index (RI) for each cluster in the Nano's current model.  The cluster assigned the most patterns has anomaly index of 0 up to a maximum of 1000 for a cluster that has only been assigned one pattern. Cluster 0 always has anomaly index of 1000.
 
-### frequencyIndexes
-Similar to the anomaly indexes, each value in this list gives the frequency index associated with the corresponding cluster whose ID beginning with cluster 0. These values are integers that range from 0 and up. While there is no definitive upper bound, each Nano model will have a local upper bound. Values below 1000 indicate clusters whose sizes are smaller than average, where 0 is the most common cluster size. Values above 1000 have been assigned more patterns than average and the further they are above 1000, the larger the cluster is. This statistic is a dual use value where anomalies (very small and very large) can be considered when they have values on either side of 1000.
+* **clusterSizes:** The values in this list give the number of patterns that have been assigned to each cluster beginning with cluster 0. When learning is turned off, this value does not change.
 
-### distanceIndexes
-Distance indexes refer to each cluster's spatial relation to the other clusters. Values close to 1000 are very far away from the natural centroid of all of the clusters. Values close to 0 are located near the center of all the clusters. On average, these values don't vary much and develop a natural mean. This is also a dual threshold statistic since the natural mean represents the typical spacing of the clusters and there can be abnormally close clusters and abnormally distant clusters.
+* **totalInferences:** This is the total number of patterns successfully clustered. The total of all the values in clusterSizes should also equal this value.
 
-### clusterGrowth
-The cluster growth curve shows the number of inferences between the creation of each new cluster (Figure 2). The list returned by clusterGrowth is the indexed pattern numbers where a new cluster was created which can be used as the x-values of this curve. The y-values can be derived as an ascending sequence of cluster IDs: 0, 1, 2, 3, etc. For instance, if clusterGrowth returns [0 1 5 7 20], the coordinates of the cluster growth plot would be: [0 0], [1 1], [5 2], [7 3] [20 4].
+* **anomalyIndexes:** The values in this list give raw anomaly index (RI) for each cluster in the Boon Nano's current model. The cluster assigned the most patterns has anomaly index of 0 up to a maximum of 1000 for a cluster that has only been assigned one pattern. Cluster 0 always has anomaly index of 1000.
 
-### PCA
-Clusters in the Boon Nano are naturally mapped into a very high-dimensional space. This makes it difficult to meaningfully visualize the clusters on a two- or three-dimensional plot. The Nano's PCA list is similar to traditional principal component analysis in the sense it can be used to remap a high-dimensional vector into a lower dimensional space that, as far as possible, preserves distances and limits the flattening effects of projection. The PCA coordinates can be used, for example, to assign RGB values to assign a meaningful color to each cluster. Clusters with different but similar colors are from clusters whose assigned patterns are different enough to be in distinct clusters but that are still close to each relative to the other clusters in the model. The zero cluster is always the first value in the list of PCA values and is always represented by [0, 0, 0].
+* **frequencyIndexes:** Similar to the anomaly indexes, each value in this list gives the frequency index associated with the corresponding cluster whose ID beginning with cluster 0. These values are integers that range from 0 and up. While there is no definitive upper bound, each Nano model will have a local upper bound. Values below 1000 indicate clusters whose sizes are smaller than average, where 0 is the most common cluster size. Values above 1000 have been assigned more patterns than average and the further they are above 1000, the larger the cluster is. This statistic is a dual use value where anomalies (very small and very large) can be considered when they have values on either side of 1000.
 
+* **distanceIndexes:** Distance indexes refer to each cluster's spatial relation to the other clusters. Values close to 1000 are very far away from the natural centroid of all of the clusters. Values close to 0 are located near the center of all the clusters. On average, these values don't vary much and develop a natural mean. This is also a dual threshold statistic since the natural mean represents the typical spacing of the clusters and there can be abnormally close clusters and abnormally distant clusters.
+
+* **clusterGrowth:** The cluster growth curve shows the number of inferences between the creation of each new cluster (Figure 2). The list returned by clusterGrowth is the indexed pattern numbers where a new cluster was created which can be used as the x-values of this curve. The y-values can be derived as an ascending sequence of cluster IDs: 0, 1, 2, 3, etc. For instance, if clusterGrowth returns [0 1 5 7 20], the coordinates of the cluster growth plot would be: [0 0], [1 1], [5 2], [7 3] [20 4].
+
+* **PCA:** Clusters in the Boon Nano are naturally mapped into a very high-dimensional space. This makes it difficult to meaningfully visualize the clusters on a two- or three-dimensional plot. The Nano's PCA list is similar to traditional principal component analysis in the sense it can be used to remap a high-dimensional vector into a lower dimensional space that, as far as possible, preserves distances and limits the flattening effects of projection. The PCA coordinates can be used, for example, to assign RGB values to assign a meaningful color to each cluster. Clusters with different but similar colors are from clusters whose assigned patterns are different enough to be in distinct clusters but that are still close to each relative to the other clusters in the model. The zero cluster is always the first value in the list of PCA values and is always represented by [0, 0, 0].
+ 
 <table class="table">
   <tr>
     <td><img src="images/ct_image.png" width="400"></td>
   </tr>
   <tr>
-    <td><em>Figure 6: Pulmonary CT image using PCA coloring to show distinct tissue textures and the gradients between them.</em></td>
+    <td><em>Figure 5: Pulmonary CT image using PCA coloring to show distinct tissue textures and the gradients between them.</em></td>
   </tr>
 </table>   
 
-### numClusters
-This is a single value that is the current number of clusters in the model including cluster 0. This value should equal the length of the lists: PCA, clusterSizes, anomalyIndexes, frequencyIndexes, distanceIndexes, clusterGrowth.
+* **numClusters:** This is a single value that is the current number of clusters in the model including cluster 0. This value should equal the length of the lists: PCA, clusterSizes, anomalyIndexes, frequencyIndexes, distanceIndexes, clusterGrowth.
 
-### totalInferences
-This is the total number of patterns successfully clustered. The total of all the values in clusterSizes should also equal this value.
-
-### averageInferenceTime
-The value returned here is the average time to cluster each inference in microseconds.  
+* **averageInferenceTime:** The value returned here is the average time to cluster each inference in microseconds.  
  
-## Example
+## <a name="Example"></a>Example
 We now present a very simple example to illustrate some of these ideas. A set of 48 patterns is shown in the figure below. A quick look across these indicates that there are at least two different clusters here. Each pattern has 16 features so we configure the Nano for
 * Numeric Type of float32
 * Pattern Length of 16
@@ -178,7 +143,7 @@ We now present a very simple example to illustrate some of these ideas. A set of
     <td><img src="images/sample_waveforms.png" width="800"></td>
   </tr>
   <tr>
-    <td><em>Figure 7: A collection of 48 16-dimensional vectors to be clustered</em></td>
+    <td><em>Figure 6: A collection of 48 16-dimensional vectors to be clustered</em></td>
   </tr>
 </table>   
 
@@ -197,7 +162,7 @@ We configure the Nano with these parameters and then run the patterns through th
     <td><img src="images/color_coded.png" width="800"></td>
   </tr>
   <tr>
-    <td><em>Figure 8: 48 patterns colored according to their assigned clusters</em></td>
+    <td><em>Figure 7: 48 patterns colored according to their assigned clusters</em></td>
   </tr>
 </table>  
  
@@ -208,7 +173,7 @@ The Raw Anomaly index for each of the three clusters are as follows:
 
 This indicates Cluster 1 had the most patterns assigneed to it. Cluster 2 was also common, and Cluster 3 was significantly less common. It is worth noting that a Raw Anomaly Index of 563 would not be sufficient in practice to indicate an anomaly in the machine learning model. Typically, useful anomaly indexes must be in the range of 700 to 1000 to indicate a pattern that is far outside the norm of what has been learned.
 
-**Important Simplifications:** This is an artificially small and simple example to illustrate the meaning of some of the basic principles of using the Boon Nano. In particular, 
+**Simplification Disclaimer:** This is an artificially small and simple example to illustrate the meaning of some of the basic principles of using the Boon Nano. In particular, 
 * The Boon Nano is typically be used to cluster millions or billions of patterns.
 * The number of clusters created from "real" data typically runs into the hundreds or even thousands of clusters. 
 * The speed of the Boon Nano for such a small data set is not noticeable over other clustering techniques such as K-means. However, when the input set contains 100s of millions of input vectors or when the clustering engine must run at sustained rates of 100s of thousands of inferences per second (as with video or streaming sensor data), the Boon Nano's microsecond inference speed makes it the only feasible technology for these kinds of solutions.
