@@ -11,12 +11,12 @@
   </tr>
 </table>
 
-## The Boon Nano: The Core Technology
+## <a name="BoonNano"></a>The Boon Nano: The Core Technology
 
 [Clustering with the Boon Nano](docs/Intro_to_Clustering.md)
 
-## Amber: Streaming Analytics
-**[Introduction to Amber](docs/AmberDocs/Overview.md#Intro)**
+## <a name="Amber"></a>Amber: Streaming Analytics
+**[Introduction to Amber](docs/AmberDocs/Overview.md/#Intro)**
 
 **[Operational Overview](docs/AmberDocs/Overview.md/#Operation)**
 
@@ -66,7 +66,7 @@
 * *[Javascript SDK (beta)](https://boonlogic.github.io/amber-javascript-sdk)*
 * *[C++ SDK (beta)](https://boonlogic.github.io/amber-cpp-sdk)*
 
-## Expert Console: General-Purpose Analytics
+## <a name="Expert"></a>Expert Console: General-Purpose Analytics
 
 **Programming Intefaces**
 
