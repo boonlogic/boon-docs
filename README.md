@@ -67,6 +67,8 @@
 * *[(AM) Anomaly Metric](docs/AmberDocs/Overview.md#AM)*
 * *[(AW) Amber Warning Level](docs/AmberDocs/Overview.md#AW)*
 
+**[Amber Model Status](docs/AmberDocs/Overview.md#Amber_Model)
+
 **Examples**
 
 * *[Anomaly Detection in a Single-Sensor Asset](Single_Sensor_Example/TimeSeries.md)*
