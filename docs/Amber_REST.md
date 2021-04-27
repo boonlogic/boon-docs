@@ -211,7 +211,7 @@ Example:
 
 ## POST /config
 
-Apply the provided configuration to an Amber sensor instance. A sensor's configuration determines the dimensionality and streaming window size for input data, how many samples to ingest before autotuning, and its criteria for transitioning from Learning to Monitoring mode. A sensor must be configured before any data can be streamed to it using **POST /stream**.
+Apply the provided configuration to an Amber sensor instance. A sensor's configuration determines the dimensionality and streaming window size for input data, how many samples to ingest before autotuning, and its criteria for transitioning from Learning to Monitoring mode. A sensor must be configured before any data can be streamed to it using **POST /stream**. Basic parameter descriptions are below. For complete documentation see [Configuring Amber](AmberDocs/Overview.md/#Configuring_Amber).
 
 HTTP header values:
 
@@ -253,7 +253,7 @@ Example:
 
 ## GET /config
 
-Get the current configuration of an Amber sensor instance. Note that the response includes `percentVariation` and `features`, which are not present in the posted configuration. These two hyperparameters are not set by the user but rather discovered automatically during autotuning.
+Get the current configuration of an Amber sensor instance. Note that the response includes `percentVariation` and `features`, which are not present in the posted configuration. These two hyperparameters are not set by the user but rather discovered automatically during autotuning. For complete configuration documentation see [Configuring Amber](AmberDocs/Overview.md/#Configuring_Amber).
 
 HTTP header values:
 
@@ -292,7 +292,7 @@ Example:
 
 ## POST /stream
 
-Stream data to a sensor and return the inference result. Ingoing data should be formatted as a simple string of comma-separated numbers with no spaces.
+Stream data to a sensor and return the inference result. Ingoing data should be formatted as a simple string of comma-separated numbers with no spaces. The response values are briefly described below. For complete documentation see [Amber Outputs](AmberDocs/Overview.md#Amber_Outputs).
 
 HTTP header values:
 
@@ -320,7 +320,7 @@ Response body:
       "retryCount": number of times autotuning was re-attempted to tune streamingWindowSize
       "streamingWindowSize": streaming window size of sensor (may differ from value given at configuration if window size was adjusted during autotune)
       "ID": list of cluster IDs. The values in this list correspond one-to-one with input samples, indicating the cluster to which each input pattern was assigned.
-      "SI": smoothed anomaly index. The values in this list correspond one-for-one with input samples and range between 0.0 and 1.0. Values closer to 0 represent input patterns which are ordinary given the data seen so far on this sensor. Values closer to 1 represent novel patterns which are anomalous with respect to data seen before.
+      "SI": smoothed anomaly index. The values in this list correspond one-for-one with input samples and range between 0 and 1000. Values closer to 0 represent input patterns which are ordinary given the data seen so far on this sensor. Values closer to 1 represent novel patterns which are anomalous with respect to data seen before.
       "AD": list of binary anomaly detection values. These correspond one-to-one with input samples and are produced by thresholding the smoothed anomaly index (SI). The threshold is determined automatically from the SI values. A value of 0 indicates that the SI has not exceeded the anomaly detection threshold. A value of 1 indicates it has, signaling an anomaly at the corresponding input sample.
       "AH": list of anomaly history values. These values are a moving-window sum of the AD value, giving the number of anomaly detections (1's) present in the AD signal over a "recent history" window whose length is the buffer size.
       "AM": list of Amber metric values. These are floating point values between 0.0 and 1.0 indicating the extent to which each corresponding AH value shows an unusually high number of anomalies in recent history. The values are derived statistically from a Poisson model, with values close to 0.0 signaling a lower, and values close to 1.0 signaling a higher, frequency of anomalies than usual.
