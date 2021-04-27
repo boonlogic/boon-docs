@@ -67,12 +67,12 @@
 * *[(AM) Anomaly Metric](docs/AmberDocs/Overview.md#AM)*
 * *[(AW) Amber Warning Level](docs/AmberDocs/Overview.md#AW)*
 
-**[Amber Model Status](docs/AmberDocs/Overview.md#Amber_Model)**
+**[Amber Model Status](docs/AmberDocs/Overview.md#Amber_Model)**  
 
 **Examples**
 
-* *[Anomaly Detection in a Single-Sensor Asset](Single_Sensor_Example/TimeSeries.md)*
-* *[Anomaly Detection in a Multi-Sensor Asset (Sensor Fusion)](SensorFusionExample/SensorFusionExample.md)*
+* *[Anomaly Detection in a Single-Sensor Asset](docs/AmberDocs/Single_Sensor_Example/TimeSeries.md)*
+* *[Anomaly Detection in a Multi-Sensor Asset (Sensor Fusion)](docs/AmberDocs/SensorFusionExample/SensorFusionExample.md)*
 
 **Programming Intefaces**
 
