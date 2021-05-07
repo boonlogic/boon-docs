@@ -110,3 +110,13 @@ curl --silent \
   --header "sensorId: ${sensorId}"  | jq .
 
 
+#
+# Delete the sensor
+#
+curl --silent \
+  --request DELETE \
+  --url ${url}/sensor \
+  --header "Authorization: Bearer ${idToken}" \
+  --header "Content-Type: application/json" \
+  --header "sensorId: ${sensorId}" | jq .
+
