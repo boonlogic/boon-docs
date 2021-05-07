@@ -4,6 +4,18 @@
 
 We serve an interface to the Boon Amber via the REST API described below. This API can also be accessed and explored directly through the Swagger UI [available here](../amber-static/index.html).
 
+## Examples
+
+Samples scripts are provided here to demonstrate each of Amber's API endpoints.  The scripts will need to be modified to properly set your own username/password.
+
+Bash script using curl:
+[amber-sample.sh](../examples/amber-sample.sh) (requires jq installation)
+
+
+Windows Powershell using Invoke-RestMethod:
+[amber-sample.ps1](../examples/amber-sample.ps1)
+
+
 ## POST /oauth2
 Authenticates a set of user credentials provided in the body of the request. This must be called to acquire authentication credentials prior to using other endpoints. If authentication succeeds, response will contain a base-64 encoded string under the `"idToken"` attribute. All other API requests are then authenticated by including that token in the HTTP header: `"Authorization: Bearer ${idToken}"`.
 
@@ -90,7 +102,6 @@ Example:
       --url https://amber.boonlogic.com/v1/sensor \
       --header "Authorization: Bearer ${idToken}" \
       --header "Content-Type: application/json" \
-      --header "sensorId: 0123456789abcdef" \
       --data '{"label": "my-label"}'
 
 ## GET /sensor
