@@ -71,7 +71,7 @@
 
 **Examples**
 
-* *[Anomaly Detection in a Single-Sensor Asset](docs/AmberDocs/Single_Sensor_Example/TimeSeries.md)*
+* *[Anomaly Detection in a Single-Sensor Asset](docs/AmberDocs/Single_Sensor_Example/SingleSensorExample.md)*
 * *[Anomaly Detection in a Multi-Sensor Asset (Sensor Fusion)](docs/AmberDocs/SensorFusionExample/SensorFusionExample.md)*
 
 **Programming Intefaces**

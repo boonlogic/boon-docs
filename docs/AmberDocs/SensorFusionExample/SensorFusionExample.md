@@ -1,5 +1,5 @@
 ![Logo](../../../images/BoonLogic.png)   
-# Example: Anomaly Detection in a Multi-Sensor Asset
+# Example: Anomaly Detection in a Multi-Sensor Asset (Sensor Fusion)
 
 ## Introduction
 
