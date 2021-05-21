@@ -16,6 +16,10 @@ Windows Powershell using Invoke-RestMethod:
 [amber-sample.ps1](../examples/amber-sample.ps1)
 
 
+Data file used for pretraining example:
+[pretrain-data.json](..examples/pretrain-data.json)
+
+
 ## POST /oauth2
 Authenticates a set of user credentials provided in the body of the request. This must be called to acquire authentication credentials prior to using other endpoints. If authentication succeeds, response will contain a base-64 encoded string under the `"idToken"` attribute. All other API requests are then authenticated by including that token in the HTTP header: `"Authorization: Bearer ${idToken}"`.
 
@@ -346,6 +350,63 @@ Example:
       --header "Content-Type: application/json" \
       --header "sensorId: 0123456789abcdef" \
       --data '{"data": "0,0.5,1,1.5,2"}'
+
+## POST /pretrain
+
+Pretrain a sensor using historical data. This resets the sensor instance and then trains as much as possible using the data given. The amount of data must be enough to fill up the sample buffer, i.e. greater than the `samplesToBuffer` value given during configuration. After successfully pretraining, the sensor will be in either "Learning" or "Monitoring" mode.
+
+HTTP header values:
+
+    "Authorization: Bearer ${idToken}"
+    "sensorId: <sensor-id>"
+
+Request body:
+
+    {
+      "data": <comma-separated string of numbers with no spaces>
+    }
+
+Response body:
+
+    {
+      "message": "sensor is pretraining"
+    }
+
+Example:
+
+    curl --request POST \
+      --url https://amber.boonlogic.com/v1/pretrain \
+      --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
+      --header "sensorId: 0123456789abcdef" \
+      --data "@pretrain-data.json"
+
+where the file `output_current.csv` contains the request body with data to be pretrained upon.
+
+## GET /pretrain
+
+Get a status message indicating whether the sensor instance is currently pretraining. Typically this is polled repeatedly after a sensor has begun pretraining in order to determine when pretraining has completed.
+
+HTTP header values:
+
+    "Authorization: Bearer ${idToken}"
+    "sensorId: <sensor-id>"
+
+Request body: None.
+
+Response body:
+
+    {
+      "message": "pretraining in progress" | "not pretraining"
+    }
+
+Example:
+
+    curl --request GET \
+      --url https://amber.boonlogic.com/v1/pretrain \
+      --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
+      --header "sensorId: 0123456789abcdef"
 
 ## GET /status
 

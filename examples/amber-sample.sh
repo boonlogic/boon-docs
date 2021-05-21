@@ -111,6 +111,33 @@ curl --silent \
 
 
 #
+# Pretrain sensor, checking status regularly until completed
+#
+curl --silent \
+  --request POST \
+  --url ${url}/pretrain \
+  --header "Authorization: Bearer ${idToken}" \
+  --header "Content-Type: application/json" \
+  --header "sensorId: ${sensorId}" \
+  --data "@pretrain-data.json" | jq .
+while true
+do
+  sleep 5
+  message=`curl --silent \
+    --request GET \
+    --url ${url}/pretrain \
+    --header "Authorization: Bearer ${idToken}" \
+    --header "Content-Type: application/json" \
+    --header "sensorId: ${sensorId}" | jq -r .message`
+  echo $message
+  if [ "$message" != "pretraining in progress" ]
+  then
+    break
+  fi
+done
+
+
+#
 # Delete the sensor
 #
 curl --silent \
