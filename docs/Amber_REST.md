@@ -369,7 +369,7 @@ Request body:
 Response body:
 
     {
-      "message": "sensor is pretraining"
+      "message": "pretraining in progress"
     }
 
 Example:
