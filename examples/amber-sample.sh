@@ -123,14 +123,14 @@ curl --silent \
 while true
 do
   sleep 5
-  message=`curl --silent \
+  state=`curl --silent \
     --request GET \
     --url ${url}/pretrain \
     --header "Authorization: Bearer ${idToken}" \
     --header "Content-Type: application/json" \
-    --header "sensorId: ${sensorId}" | jq -r .message`
-  echo $message
-  if [ "$message" != "pretraining in progress" ]
+    --header "sensorId: ${sensorId}" | jq -r .state`
+  echo $state
+  if [ "$state" != "Pretraining" ]
   then
     break
   fi

@@ -1,14 +1,14 @@
 # Powershell script to exercise Boon Logic Amber API
 
 # adjust these as necessary
-$username="your_username"
-$password="your_password"
+$username="your-username"
+$password="your-password"
 
 $url="https://amber.boonlogic.com/v1"
 
 
 #
-# run the oauth2 authentication call and store the authToken
+# run the oauth2 authentication call and store authToken
 #
 $Params = @{
  "URI"     = "$url/oauth2"
@@ -145,6 +145,41 @@ Invoke-RestMethod @Params
 
 echo $response | ConvertTo-Json
 
+#
+# Pretrain sensor, checking status regularly until completed
+#
+$Params = @{
+ "URI"     = "$url/pretrain"
+ "Method"  = 'POST'
+ "Headers" = @{
+   "Content-Type"  = 'application/json'
+   "Authorization" = "Bearer $authToken"
+   "sensorId" = "$sensorId"
+ }
+ "InFile" = "pretrain-data.json"
+}
+Invoke-RestMethod @Params
+while($true)
+{
+    Start-Sleep -s 5
+    $Params = @{
+     "URI"     = "$url/pretrain"
+     "Method"  = 'GET'
+     "Headers" = @{
+       "Content-Type"  = 'application/json'
+       "Authorization" = "Bearer $authToken"
+       "sensorId" = "$sensorId"
+     }
+    }
+    $response = Invoke-RestMethod @Params
+    echo $response.state
+    if ( $response.state -ne "Pretraining" )
+    {
+        break
+    }
+}
+
+echo $response | ConvertTo-Json
 
 #
 # Delete the sensor
