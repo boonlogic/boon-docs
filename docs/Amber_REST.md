@@ -369,7 +369,7 @@ Request body:
 Response body:
 
     {
-      "message": "pretraining in progress"
+      "state": "Pretraining"
     }
 
 Example:
