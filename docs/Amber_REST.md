@@ -397,7 +397,8 @@ Request body: None.
 Response body:
 
     {
-      "message": "pretraining in progress" | "not pretraining"
+      "state": "Pretraining" | "Pretrained" | "Error"
+      "message": <error message if state is Error>
     }
 
 Example:
