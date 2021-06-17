@@ -99,6 +99,11 @@ Similar to the anomaly indexes, the **Frequency Index** measures the relative nu
 ### Distance Index (DI)
 The **Distance Index** measures the distance of each cluster template to the centroid of all of the cluster templates. This overall centroid is used as the reference point for this measurement. The values range from 0 to 1000 indicating that distance with indexes close to 1000 as indicating patterns furthest from the center and values close to 0 are very close. Patterns in a space that are similar distances apart have values that are close to the average distance between all clusters to the centroid.
 
+### <a name="RootCause"></a>Root Cause Analysis
+Each pattern being processed is assigned a cluster ID. This ID can reference the associated **root cause** vector. Each root cause vector has a length equal to the total pattern length* and contains values between 0 and 1.  Each indexed value corresponds to the related pattern index in the full input pattern. 
+
+*Note: the pattern length is the number of features of the data multiplied by the streaming window size
+
 ## <a name="NanoStatus"></a>Nano Status: Accessing the Current Nano Model
 
 While Nano Results (previous section) give specific analytic results for the patterns in the most recently processed sample buffer, **Nano Status** provides core analytics about the Nano itself and the current machine learning model that has been constructed since it was configured. The results are indexed by cluster ID beginning with cluster 0. 

@@ -25,6 +25,8 @@
 
 **[Nano Status: Accessing the Current Nano Model](docs/NanoDocs/Overview.md#NanoStatus)**
 
+**[Root Cause Analysis](docs/NanoDocs/Overview.md#RootCause)**
+
 **[Example](docs/NanoDocs/Overview.md#Example)**
 
 
