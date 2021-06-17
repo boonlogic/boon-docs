@@ -99,10 +99,8 @@ Similar to the anomaly indexes, the **Frequency Index** measures the relative nu
 ### Distance Index (DI)
 The **Distance Index** measures the distance of each cluster template to the centroid of all of the cluster templates. This overall centroid is used as the reference point for this measurement. The values range from 0 to 1000 indicating that distance with indexes close to 1000 as indicating patterns furthest from the center and values close to 0 are very close. Patterns in a space that are similar distances apart have values that are close to the average distance between all clusters to the centroid.
 
-### <a name="RootCause"></a>Root Cause Analysis
-Each pattern being processed is assigned a cluster ID. This ID can reference the associated **root cause** vector. Each root cause vector has a length equal to the total pattern length* and contains values between 0 and 1.  Each indexed value corresponds to the related pattern index in the full input pattern. 
-
-*Note: the pattern length is the number of features of the data multiplied by the streaming window size
+### <a name="RootCause"></a>Root Cause Analysis (RC)
+Each processed pattern is assigned a cluster ID. The ID can reference the associated **Root Cause** vector. This vector is a representation of the features' significance when the cluster was created. Values range from 0 to 1 where relationally high values are more influential in the creation of the cluster. Values close to 0 are statistically insignificant and no conclusion can be drawn from them. 
 
 ## <a name="NanoStatus"></a>Nano Status: Accessing the Current Nano Model
 
@@ -139,9 +137,9 @@ The values in this list give raw anomaly index (RI) for each cluster in the Nano
 * **averageInferenceTime:** The value returned here is the average time to cluster each inference in microseconds.  
  
 ## <a name="Example"></a>Example
-We now present a very simple example to illustrate some of these ideas. A set of 48 patterns is shown in the figure below. A quick look across these indicates that there are at least two different clusters here. Each pattern has 16 features so we configure the Nano for
-* Numeric Type of float32
-* Pattern Length of 16
+We now present a very simple example to illustrate some of these ideas. A set of 48 patterns is shown in the figure below. A quick look across these indicates that there are at least two different clusters here. Each pattern has 16 features so we configure the Nano for  
+* Numeric Type of float32  
+* Pattern Length of 16  
 
 <table class="table">
   <tr>
@@ -153,10 +151,10 @@ We now present a very simple example to illustrate some of these ideas. A set of
 </table>   
 
 
-We could select the mininum and maximum by visual inspection, but it is not possible to determine the correct Percent Variation this way. So we instead load the patterns into the Nano and tell the Nano to Autotune those parameters. The results comes back with 
-* Min = -4.39421
-* Max = 4.34271
-* Percent Variation = 0.073
+We could select the mininum and maximum by visual inspection, but it is not possible to determine the correct Percent Variation this way. So we instead load the patterns into the Nano and tell the Nano to Autotune those parameters. The results comes back with:   
+* Min = -4.39421  
+* Max = 4.34271  
+* Percent Variation = 0.073  
 
 We configure the Nano with these parameters and then run the patterns through the Nano, requesting as a result the "ID" assigned to each input pattern. We receive back the following list: {1, 1, 2, 1, 1, 2, 1, 2, 1, 1, 1, 1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 2, 2, 2, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 3, 3, 2, 2, 2, 2, 1, 1}
  
@@ -171,14 +169,14 @@ We configure the Nano with these parameters and then run the patterns through th
   </tr>
 </table>  
  
-The Raw Anomaly index for each of the three clusters are as follows:
-* Cluster 1 Raw Anomaly Index: 0
-* Cluster 2 Raw Anomaly Index: 170
+The Raw Anomaly index for each of the three clusters are as follows:  
+* Cluster 1 Raw Anomaly Index: 0  
+* Cluster 2 Raw Anomaly Index: 170  
 * Cluster 3 Raw Anomaly Index: 563
 
 This indicates Cluster 1 had the most patterns assigneed to it. Cluster 2 was also common, and Cluster 3 was significantly less common. It is worth noting that a Raw Anomaly Index of 563 would not be sufficient in practice to indicate an anomaly in the machine learning model. Typically, useful anomaly indexes must be in the range of 700 to 1000 to indicate a pattern that is far outside the norm of what has been learned.
 
-**Simplification Disclaimer:** This is an artificially small and simple example to illustrate the meaning of some of the basic principles of using the Boon Nano. In particular, 
-* The Boon Nano is typically be used to cluster millions or billions of patterns.
-* The number of clusters created from "real" data typically runs into the hundreds or even thousands of clusters. 
+**Simplification Disclaimer:** This is an artificially small and simple example to illustrate the meaning of some of the basic principles of using the Boon Nano. In particular:  
+* The Boon Nano is typically be used to cluster millions or billions of patterns.  
+* The number of clusters created from "real" data typically runs into the hundreds or even thousands of clusters.  
 * The speed of the Boon Nano for such a small data set is not noticeable over other clustering techniques such as K-means. However, when the input set contains 100s of millions of input vectors or when the clustering engine must run at sustained rates of 100s of thousands of inferences per second (as with video or streaming sensor data), the Boon Nano's microsecond inference speed makes it the only feasible technology for these kinds of solutions.
