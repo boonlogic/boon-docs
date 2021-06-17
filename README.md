@@ -74,7 +74,9 @@
 * *[Anomaly Detection in a Single-Sensor Asset](docs/AmberDocs/SingleSensorExample/SingleSensorExample.md)*
 * *[Anomaly Detection in a Multi-Sensor Asset (Sensor Fusion)](docs/AmberDocs/SensorFusionExample/SensorFusionExample.md)*
 
-**Programming Intefaces**
+**[Amber Licensing](docs/Amber_License.md#Amber_Model)**
+
+**Amber Programming Interfaces**
 
 * *[REST API](docs/Amber_REST.md)*
 * *[Python SDK](https://boonlogic.github.io/amber-python-sdk)*
@@ -83,7 +85,7 @@
 
 ## <a name="Expert"></a>Expert Console: General-Purpose Analytics
 
-**Programming Intefaces**
+**Expert-Console Programming Interfaces**
 
 * *[REST API](static/index.html)*
 * *[Excel SDK](https://boonlogic.github.io/expert-excel-sdk)*
