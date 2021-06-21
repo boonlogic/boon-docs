@@ -140,5 +140,6 @@ Using the data set provided and the Amber configuration above, you should get re
 
 <a href="SWS100_Results.csv" download>Download Amber Results for SWS = 100</a>
 
-
+### Interpreting Root Cause
+In the case of single sensor, root cause does not provide any additional information about the results. The purpose of root cause is to determine which feature is of interest when the new cluster was created, but in single sensor, there is only one source for all the features.
 

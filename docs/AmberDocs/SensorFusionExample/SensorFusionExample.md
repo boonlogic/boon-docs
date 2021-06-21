@@ -7,7 +7,7 @@ One the most powerful capabilities of Amber can be seen when it processes sensor
 
 <table class="table">
   <tr>
-    <td><img src="ExampleSensorRelationships.png" width="800"></td>
+    <td><img src="./images/ExampleSensorRelationships.png" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 1: Examples of sensor relationships for a motor asset. (a) shows a normal state of "Not running" for the asset. (b) and (c) show other relationships between sensors.</em></td>
@@ -23,7 +23,7 @@ Figure 1 shows data collected from a pump asset with multiple sensors. The parti
 
 <table class="table">
   <tr>
-    <td><img src="MultiSensorAnomalyIndex.png" width="800"></td>
+    <td><img src="./images/MultiSensorAnomalyIndex.png" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 2: Six anomalies in the data are shown as A1 through A6. A3 through A6 are anomalies that can be detected using traditional techniques. Anomalies A1 and A2 are relational anomalies only visible to Amber's high-dimensional model.    </em></td>
@@ -48,5 +48,24 @@ The Feature Count is set to 5 since there are 5 features in each sensor fusion v
 Using the data set provided and the Amber configuration above, you should get results for the Anomaly Index (SI) that look as shown in Figure 2. The complete set of Amber results are in this file.
  
 <a href="AmberDemo_Results.csv" download>Download Amber Results</a>
+
+### Interpreting Root Cause
+Root Cause Analysis applies to all clustered patterns, but most often is used in the analysis of anomalous patters. Using the cluster IDs associated with the six flagged anomalies, the root cause analysis vectors correlate with each anomaly. Each detection has multiple cluster IDs associated with it which is represented by each of the vectors shown in one of the following images. The six images correlate to the six anomaly detections shown above. 
+
+<table class="table">
+  <tr>
+    <td><img src="./images/A1.png" width="300"></td>
+    <td><img src="./images/A2.png" width="300"></td>
+    <td><img src="./images/A3.png" width="300"></td>
+  </tr>
+  <tr>
+    <td><img src="./images/A4.png" width="300"></td>
+    <td><img src="./images/A5.png" width="300"></td>
+    <td><img src="./images/A6.png" width="300"></td>
+  </tr>
+  <tr>
+    <td colspan="3"><em>Figure 3: The six plots are associated with the six anomalies talked about above. The different vectors in each figure are associated with the various clusters that occured in each detection. The first two plots are fairly even in terms of significance value across the features. A3 through A6 however, have a higher significance with feature 5. This shows that that feature is most different from the other clusters created.   </em></td>
+  </tr>
+</table>
 
 
