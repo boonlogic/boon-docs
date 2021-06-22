@@ -134,7 +134,7 @@ To get these results, we configure Amber with following settings
 
 The Feature Count is set to 1 since there just the one feature in this time series. Setting the Streaming Window Size to 25 means Amber will look at 25 consecutive samples as one pattern to be clustered. Setting the Streaming Window Size to 100 means Amber will look at 100 consecutive samples as one pattern to be clustered. Samples to Buffer is set to 1000 since, for this data set, that is enough to capture both the normal running states for this asset. Setting the Learning Rate Numerator to 1 and the Denominator to 1000 means that Amber will switch automatically from Learning to Monitoring when there are fewer than 1 new clusters created over 1000 consecutive samples. 
 
-Using the data set provided and the Amber configuration above, you should get results for the Anomaly Index (SI) that look as shown in Figure 3. The complete set of Amber results are in these file.
+Using the data set provided and the Amber configuration above, send in 10 samples at a time and you should get results for the Anomaly Index (SI) that look as shown in Figure 3. The complete set of Amber results are in these file.
  
 <a href="SWS25_Results.csv" download>Download Amber Results for SWS = 25</a>
 
