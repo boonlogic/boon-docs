@@ -50,7 +50,7 @@ Using the data set provided and the Amber configuration above, you should get re
 <a href="AmberDemo_Results.csv" download>Download Amber Results</a>
 
 ### Interpreting Root Cause
-Root Cause Analysis applies to all clustered patterns, but most often is used in the analysis of anomalous patters. Using the cluster IDs associated with the six flagged anomalies, the root cause analysis vectors correlate with each anomaly. Each detection has multiple cluster IDs associated with it which is represented by each of the vectors shown in one of the following images. The six images correlate to the six anomaly detections shown above. 
+Root Cause Analysis applies to all clustered patterns, but most often is used in the analysis of anomalous patters. Using the cluster IDs associated with the six flagged anomalies, the root cause analysis vectors correlate with each anomaly. Each detection has multiple cluster IDs associated with it. The root cause vectors associated with the cluster IDs for one anomalous flagging are shown by each of the vectors shown in one of the following images. The six images correlate to the six anomaly detections shown above. 
 
 <table class="table">
   <tr>
@@ -64,7 +64,7 @@ Root Cause Analysis applies to all clustered patterns, but most often is used in
     <td><img src="./images/A6.png" width="300"></td>
   </tr>
   <tr>
-    <td colspan="3"><em>Figure 3: The six plots are associated with the six anomalies talked about above. The different vectors in each figure are associated with the various clusters that occured in each detection. The first two plots are fairly even in terms of significance value across the features. A3 through A6 however, have a higher significance with feature 5. This shows that that feature is most different from the other clusters created.   </em></td>
+    <td colspan="3"><em>Figure 3: The six plots are associated with the six anomalies talked about above. The different vectors in each figure are associated with the various clusters that occured in each detection. The first two plots are fairly even in terms of significance value across the features. These two are relational anomalies that don't have specific features that cause the detection but rather the  correlation between values that cause it. A3 through A6 however, have a high significance with feature 5 as well as 2 or 3 depending on the detection. This shows that those features are most different from the other clusters created.   </em></td>
   </tr>
 </table>
 
