@@ -382,3 +382,45 @@ Example:
       --header "Authorization: Bearer ${idToken}" \
       --header "Content-Type: application/json" \
       --header "sensorId: 0123456789abcdef"
+      
+      
+## GET /rootCause
+
+Gets the root cause analysis vector for the given cluster ID or pattern vector.
+
+HTTP header values:
+
+    "Authorization: Bearer ${idToken}"
+    "sensorId: <sensor-id>"
+URL query parameters:
+
+    "pattern=[pattern-vectors]"
+    "clusterID=[cluster-ids]"
+
+Request body: None.
+
+Response body:
+
+    [
+    	[root cause vector for the first pattern/ID given],
+    	[root cause vector for the second pattern/ID given (if applicable)],
+    	...
+    ]
+
+Example:
+
+    curl --request GET \
+      --url https://amber.boonlogic.com/v1/rootCause? \
+      clusterID=[1,2] \
+      --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
+      --header "sensorId: 0123456789abcdef"
+      
+OR
+      
+      curl --request GET \
+      --url https://amber.boonlogic.com/v1/rootCause? \
+      pattern=[[1,1,2,3,1,2]] \
+      --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
+      --header "sensorId: 0123456789abcdef"
