@@ -29,6 +29,8 @@ When a single pattern is assigned an anomaly index, this is called an *inference
 
 * **Smoothed anomaly index (SI)**: The Boon Nano assigns to each pattern a smoothed **anomaly index**, that indicates how many patterns are in its cluster relative to other clusters. These integer values range from 0 to 1000 where values close to zero signify patterns that are the most common and happen very frequently. Values close to 1000 are very infrequent and are considered more anomalous the closer the values get to 1000. Patterns with cluster ID of 0 have an anomaly index of 1000.
 
+* **Raw anomaly index (RI)**: The SI values without any smoothing.
+
 * **Anomaly detections (AD):** An array of 0's and 1's as **anomaly detection** values. These correspond one-to-one with input samples and are produced by thresholding the smoothed anomaly index (SI). The threshold is determined automatically from the SI values. A value of 0 indicates that the SI has not exceeded the anomaly detection threshold. A value of 1 indicates it has, signaling an anomaly at the corresponding input sample.
 
 * **Anomaly history (AH):** An array of **anomaly history** values. These values are a moving-window sum of the AD value, giving the number of anomaly detections (1's) present in the AD signal over a "recent history" window whose length is the buffer size.
