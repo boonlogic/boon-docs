@@ -65,7 +65,7 @@ Root Cause Analysis applies to all clustered patterns, but most often is used in
     <td><img src="./images/A6.png" width="300"></td>
   </tr>
   <tr>
-    <td colspan="3"><em>Figure 3: The six plots are associated with the six anomalies talked about above. The different vectors in each figure are associated with the various clusters that occured in each detection. The first two plots are fairly even in terms of significance value across the features. These two are relational anomalies that don't have specific features that cause the detection but rather the  correlation between values that cause it. A3 through A6 however, have a high significance with feature 5 as well as 2 or 3 depending on the detection. This shows that those features are most different from the other clusters created.   </em></td>
+    <td colspan="3"><em>Figure 3: The six plots are associated with the six anomalies talked about above. The vectors in each figure are associated with the clusters that occured in each detection. The first two plots show relatively equal significance across the features. In other words, these two relational anomalies have no specific features that caused the detection but rather the correlation across features caused it. A3 through A6 however, have a higher significance with feature 5 as well as 2 or 3 depending on the detection. This shows that those features were most significiant in the creation of those clusters. Those features may be considered as diagnostic in understanding why this event was an anomaly. </em></td>
   </tr>
 </table>
 

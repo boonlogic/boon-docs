@@ -100,7 +100,7 @@ Similar to the anomaly indexes, the **Frequency Index** measures the relative nu
 The **Distance Index** measures the distance of each cluster template to the centroid of all of the cluster templates. This overall centroid is used as the reference point for this measurement. The values range from 0 to 1000 indicating that distance with indexes close to 1000 as indicating patterns furthest from the center and values close to 0 are very close. Patterns in a space that are similar distances apart have values that are close to the average distance between all clusters to the centroid.
 
 ### <a name="RootCause"></a>Root Cause Analysis (RC)
-Each processed pattern is assigned a cluster ID. The ID can reference the associated **Root Cause** vector. This vector is a representation of the features' significance when the cluster was created. Values range from 0 to 1 where relationally high values are more influential in the creation of the cluster. Values close to 0 are statistically insignificant and no conclusion can be drawn from them. 
+Each processed pattern is assigned a cluster ID. The ID can reference the associated **Root Cause** vector. This vector is a representation of each feature's significance when the cluster was created. Values range from 0 to 1 where relatively high values are more influential in the creation of the cluster. Values close to 0 lack statistically significance and no conclusion can be drawn from them. 
 
 ## <a name="NanoStatus"></a>Nano Status: Accessing the Current Nano Model
 
