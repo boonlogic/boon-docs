@@ -127,6 +127,7 @@ To get these results, we configure Amber with following settings
 * Feature Count: 1
 * Streaming Window Size: 25 (or 100)
 * Samples to Buffer: 1000
+* Anomaly History Window: 10000
 * Learning Rate Max Clusters: 1000
 * Learning Rate Max Samples: 1000000
 * Learning Rate Numerator: 1
