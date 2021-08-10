@@ -64,6 +64,7 @@
 
 * *[(ID) Cluster ID](docs/AmberDocs/Overview.md#ID)*
 * *[(SI) Smoothed Anomaly Index](docs/AmberDocs/Overview.md#SI)*
+* *[(RI) Raw Anomaly Index](docs/AmberDocs/Overview.md#RI)*
 * *[(AD) Anomaly Detections](docs/AmberDocs/Overview.md#AD)*
 * *[(AH) Anomaly History](docs/AmberDocs/Overview.md#AH)*
 * *[(AM) Anomaly Metric](docs/AmberDocs/Overview.md#AM)*
