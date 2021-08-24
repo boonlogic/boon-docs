@@ -30,8 +30,8 @@ $Params = @{
  "Headers" = @{
    "Content-Type"  = 'application/json'
    "Authorization" = "Bearer $authToken"
-   "Body" = '{"label": "some-random-label"}'
  }
+ "Body" = '{"label": "some-random-label"}'
 }
 $response = (Invoke-RestMethod @Params)
 
@@ -51,8 +51,8 @@ $Params = @{
    "Content-Type"  = 'application/json'
    "Authorization" = "Bearer $authToken"
    "sensorId" = "$sensorId"
-   "Body" = '{"label": "motor_765_bay4"}'
  }
+ "Body" = '{"label": "motor_765_bay4"}'
 }
 $response = (Invoke-RestMethod @Params)
 
