@@ -231,6 +231,8 @@ Having said this, it is important to state that a persistant fault condition sho
 
 Finally, it is well known that when monitoring a complex asset, even a well-trained anomaly detector will see transient, periodic departures from the model. This is a "normal" behavior for the asset, and we call this a "background level" of anomalies. Amber also learns this background level of anomalies from the training set, creating a traditional Poisson model around it so that when an "Amber Warning" or "Amber Critical" message is signaled by Amber (via its AW metric), it is not just a solitary transient anomaly, but a pattern of anomalies that is statistically outside of what was seen during the asset's compliant training state.
 
+### <a name="Pretraining"></a>Using Pretraining
+
 ## <a name="Amber_Outputs"></a>Amber Outputs
 During Monitoring, each sensor fusion vector processed by Amber produces an entire array of analytic outputs. These are described below.
 

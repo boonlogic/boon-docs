@@ -348,6 +348,40 @@ Example:
       --header "sensorId: 0123456789abcdef" \
       --data '{"data": "0,0.5,1,1.5,2"}'
 
+## POST /pretrain
+
+Send historical data to a sensor to train the model. Ingoing data should be formatted as a simple string of comma-separated numbers with no spaces. The model is then trained and set to monitoring if autotuneConfig is true, otherwise is trained with the given data. For complete documentation see [Amber Outputs](AmberDocs/Overview.md#Pretraining).
+
+HTTP header values:
+
+    "Authorization: Bearer ${idToken}"
+    "sensorId: <sensor-id>"
+
+Request body:
+
+    {
+      "data": <comma-separated string of numbers with no spaces>,
+      "autotuneConfig": <boolean for autotuning the config>
+    }
+
+Response body:
+
+    {
+      "state": sensor state as of this call. One of:
+          "Pretraining": model is in progress
+          "Pretrained": data has been processed and model created
+      "message": accompanying message for current sensor state
+    }
+
+Example:
+
+    curl --request POST \
+      --url https://amber.boonlogic.com/v1/pretrain \
+      --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
+      --header "sensorId: 0123456789abcdef" \
+      --data '{"data": "0,0.5,1,1.5,2", "autotuneConfig": "true"}'
+
 ## GET /status
 
 Get analytics derived from data processed by a sensor so far.
