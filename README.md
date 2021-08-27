@@ -59,6 +59,7 @@
 * *[The Autotuning Buffer](docs/AmberDocs/Overview.md/#Autotuning_Buffer)*
 * *[The Training Buffer](docs/AmberDocs/Overview.md/#Training_Buffer)*
 * *[Anomalies During Training](docs/AmberDocs/Overview.md/#Anomalies_During_Training)*
+* *[Using Pretraining](docs/AmberDocs/Overview.md/#Pretraining)*
 
 **[Amber Outputs](docs/AmberDocs/Overview.md#Amber_Outputs)**
 
