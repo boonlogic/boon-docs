@@ -85,7 +85,7 @@
 
 * *[REST API](docs/Amber_REST.md)*
 * *[Python SDK](https://boonlogic.github.io/amber-python-sdk)*
-* *[Javascript SDK (https://boonlogic.github.io/amber-javascript-sdk)*
+* *[Javascript SDK] (https://boonlogic.github.io/amber-javascript-sdk)*
 * *[C++ SDK (beta)](https://boonlogic.github.io/amber-cpp-sdk)*
 
 ## <a name="Expert"></a>Expert Console: General-Purpose Analytics
