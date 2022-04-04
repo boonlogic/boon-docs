@@ -64,7 +64,6 @@ Response body:
       [
         {
           "sensorId": sensor ID for this sensor
-          "tenantId": account that owns this sensor
           "label": label for this sensor
         },
         ... (for all sensors)
@@ -96,7 +95,6 @@ Response body:
 
     {
       "sensorId": sensor ID of created sensor
-      "tenantId": account that owns this sensor
       "label": sensor label
     }
 
@@ -123,41 +121,41 @@ Response body:
 
     {
       "sensorId": sensor ID of created sensor
-      "tenantId": account that owns this sensor
       "label": sensor label
       "usageInfo": {
-        "putSensor": {
-        	"callsTotal": total number of calls to this endpoint
-        	"callsThisPeriod": calls this billing period to this endpoint
-        	"lastCalled": ISO formatted time of last call to this endpoint
+        "postSensor": {
+            "callsTotal":
+            "callsThisPeriod":    (same as above)
+            "lastCalled":
         },
         "postConfig": {
-        	"callsTotal":
-        	"callsThisPeriod":    (same as above)
-        	"lastCalled":
+            "callsTotal":
+            "callsThisPeriod":    (same as above)
+            "lastCalled":
         },
+        "postStream": {
+            "callsTotal": total number of calls to the /PUT stream endpoint
+            "callsThisPeriod": calls this billing period to this endpoint
+            "lastCalled": ISO formatted time of last call to this endpoint
+            "samplesTotal": total number of samples processed
+            "samplesThisPeriod": number of samples processed this billing period
+        }
         "getSensor": {
         	"callsTotal":
         	"callsThisPeriod":    (same as above)
         	"lastCalled":
         },
         "getConfig": {
-        	"callsTotal":
-        	"callsThisPeriod":    (same as above)
-        	"lastCalled":
-        },
-        "getStatus": {
-        	"callsTotal":
-        	"callsThisPeriod":    (same as above)
-        	"lastCalled":
-        },
-        "postStream": {
-        	"callsTotal":
-        	"callsThisPeriod":    (same as above)
-        	"lastCalled":
-        	"samplesTotal": total number of samples processed
-        	"samplesThisPeriod": number of samples processed this billing period
+            "callsTotal":
+            "callsThisPeriod":    (same as above)
+            "lastCalled":
         }
+        ... same as above for each of:
+        - getAmberSummary
+        - getRootCause
+        - getStatus 
+        - postPretrain
+        - putSensor
       }
     }
 
@@ -188,8 +186,7 @@ Response body:
 
     {
       "sensorId": sensor ID of re-labeled sensor
-      "tenantId": account that owns this sensor
-      "label": new sensor label
+      "label": newly assigned label
     }
 
 Example:
@@ -238,12 +235,24 @@ Request body:
     {
       "featureCount":  number of features (dimensionality of each data sample)
       "streamingWindowSize": streaming window size (number of samples)
-      "samplesToBuffer": number of initial samples to load before autotuning
-      "learningRateNumerator": sensor "graduates" (i.e. transitions from learning to monitoring mode) if fewer than learningRateNumerator new clusters are created in the last learningRateDenominator samples
-      "learningRateDenominator': see learningRateNumerator
-      "learningMaxClusters": sensor graduates if this many clusters are created
-      "learningMaxSamples": sensor graduates if this many samples are processed
+      "samplesToBuffer": number of initial samples to load before autotuning (default 10000)
+      "learningRateNumerator": sensor "graduates" (i.e. transitions from learning to monitoring mode) if fewer than learningRateNumerator new clusters are created in the last learningRateDenominator samples (default 10)
+      "learningRateDenominator': see learningRateNumerator (default 10000)
+      "learningMaxClusters": sensor graduates if this many clusters are created (default 1000)
+      "learningMaxSamples": sensor graduates if this many samples are processed (default 1000000)
+      "anomalyHistoryWindow": number of past samples to use when assessing historical anomalies (default 10000)
+      "features": [
+        {
+          "label": label for this feature
+          "min": (optional) minimum value for this feature - data values below this will be clipped into min/max range
+          "max": (optional) maximum value for this feature - data values above this will be clipped into min/max range
+          "submitRule": (optional) whether updates to this feature's value should submit the feature vector for inference in fusion mode (see /PUT config). One of "submit", "nosubmit" (default is "submit")
+        }
+        ... (for all features)
+      ]
     }
+
+`"featureCount"` is meant as a shortcut which will config features with default labels and find smart min/max values during autotuning. If `"features"` is provided, the number of elements must agree with `"featureCount"` and the features are then configured explicitly according to the `"features"` array.
 
 Response body:
 
@@ -255,6 +264,16 @@ Response body:
       "learningRateDenominator": applied learningRateDenominator
       "learningMaxClusters": applied learningMaxClusters
       "learningMaxSamples": applied learningMaxSamples
+      "anomalyHistoryWindow": applied anomalyHistoryWindow,
+      "features": [
+          {
+            "label": feature name (default "feature-0")
+            "maxVal": explicit min value for this feature, (default 0, will be set by autotuning)
+            "minVal": explicit max value for this feature, (default 1, will be set by autotuning)
+            "submitRule": "submit" | "nosubmit" (default "submit")
+          },
+          ... (for all features)
+      ]
     }
 
 Example:
@@ -265,6 +284,63 @@ Example:
       --header "Content-Type: application/json" \
       --header "sensorId: 0123456789abcdef" \
       --data '{"featureCount": 1, "streamingWindowSize": 25, "samplesToBuffer": 1000, "learningRateNumerator": 10, "learningRateDenominator": 10000, "learningMaxSamples": 1000000, "learningMaxClusters": 1000}'
+
+## PUT /config
+
+This endpoint has two capabilities: 
+
+1. Configure the sensor for "sensor fusion" mode. In this mode, the sensor is configured with an input vector of explicitly named features. Each input feature represents an individual data stream to be combined with the others to form a "fusion vector". The fusion vector is composed of the latest value from each input stream, where the inputs are various sensor streams from the same process under monitoring. The fusion vector acts as a state vector for the system as a whole, enabling joint anomaly detection across all sensors on the asset.
+
+2. Enable learning: forcibly switch a sensor in Monitoring mode back into Learning with the provided streaming configuration.
+
+HTTP header values:
+
+    "Authorization: Bearer ${idToken}"
+    "sensorId: <sensor-id>"
+
+Request body:
+
+    {
+      "features": [
+        {
+          "label": feature name
+          "submitRule": "submit" | "nosubmit" (default "submit")
+        }
+        ... (for all features)
+      ],
+      "streaming": {
+        "featureCount": same as /POST config
+        "streamingWindowSize": same as /POST config
+        "samplesToBuffer": same as /POST config
+        "learningRateNumerator": same as /POST config
+        "learningRateDenominator": same as /POST config
+        "learningMaxClusters": same as /POST config
+        "learningMaxSamples": same as /POST config
+        "anomalyHistoryWindow": same as /POST config
+      }
+    }
+
+One or both of `"features"` and `"streaming"` may be provided.
+
+Response body:
+
+    {
+      "features": [
+        {
+          "label": applied label
+          "submitRule": applied submit rule
+        }
+        ... (for all features)
+    }
+
+Example:
+
+    curl --request PUT \
+      --url https://amber.boonlogic.com/v1/config \
+      --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
+      --header "sensorId: 0123456789abcdef" \
+      --data '{"features": [{"label": "f0", "submitRule": "submit"}, {"label": "f1", "submitRule": "submit"}, {"label": "f2", "submitRule": "nosubmit"}]}'
 
 ## GET /config
 
@@ -288,10 +364,13 @@ Response body:
       "learningMaxClusters": sensor graduates if this many clusters are created
       "learningMaxSamples": sensor graduates if this many samples are processed
       "percentVariation": percent variation hyperparameter discovered by autotuning
+      "anomalyHistoryWindow": configured anomaly history window
       "features": [
         {
-          "minVal": min value discovered by autotuning for feature 1
-          "maxVal": max value discovered by autotuning for feature 1
+          "minVal": min value discovered by autotuning for first feature
+          "maxVal": max value discovered by autotuning for first feature
+          "label": label for first feature
+          "submitRule": submit rule for first feature
         },
         ... (for all features)
       ]
@@ -317,7 +396,7 @@ HTTP header values:
 Request body:
 
     {
-      "data": <comma-separated string of numbers with no spaces>
+      "data": comma-separated string of numbers with no spaces
     }
 
 Response body:
@@ -352,6 +431,54 @@ Example:
       --header "sensorId: 0123456789abcdef" \
       --data '{"data": "0,0.5,1,1.5,2"}'
 
+## PUT /stream
+
+Update one or more values of the sensor's fusion vector, returning an inference result if the updated vector was submitted. Updates are provided as a list of new sample values for individual features.
+
+HTTP header values:
+
+    "Authorization: Bearer ${idToken}"
+    "sensorId: <sensor-id>"
+
+Request body:
+
+    {
+      "vector": [
+        {
+          "label": name of fusion feature to update
+          "value": set fusion feature to this new value
+        },
+        ... (for one or more fields to update)
+      ],
+      "submitRule": whether to submit vector for inference on this request. Setting this field to "submit" or "nosubmit" will forcibly override the per-feature submit rules in determining whether to perform an inference. If not provided, default is "default" which respects per-feature submit rules.
+    }
+
+Response body:
+
+If vector was submitted for inference, response code is 200 and body is the same as that of /POST stream.
+
+If vector was updated but not submitted for inference, response code is 202 (accepted) with the following body:
+
+    {
+      "vector": [
+        {
+          "label": label for first feature in vector
+          "value": updated value for first feature in vector
+        },
+        ... (for all values in vector)
+      ],
+      "vectorCSV": comma-separated string of raw vector values
+    }
+
+Example:
+
+    curl --request PUT \
+      --url https://amber.boonlogic.com/v1/stream \
+      --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
+      --header "sensorId: 0123456789abcdef" \
+      --data '{"features": [{"label": "f0", "value": "0.25"}, {"label": "f2", "value": "0.5"}]}'
+
 ## POST /pretrain
 
 Pretrain a sensor using historical data. This resets the sensor instance and then trains as much as possible using the data given. The amount of data must be enough to fill up the sample buffer, i.e. greater than the `samplesToBuffer` value given during configuration. After successfully pretraining, the sensor will be in either "Learning" or "Monitoring" mode.
@@ -364,13 +491,15 @@ HTTP header values:
 Request body:
 
     {
-      "data": <comma-separated string of numbers with no spaces>
+      "data": comma-separated string of numbers with no spaces
+      "autotuneConfig": if true, automatically adjust streaming configuration so that sensor is in Monitoring mode upon completion
     }
 
 Response body:
 
     {
-      "state": "Pretraining"
+      "state": "None" | "Pretraining" | "Pretrained" | "Error"
+      "message": error message if state is Error
     }
 
 Example:
@@ -399,7 +528,7 @@ Response body:
 
     {
       "state": "Pretraining" | "Pretrained" | "Error"
-      "message": <error message if state is Error>
+      "message": error message if state is Error
     }
 
 Example:
@@ -424,6 +553,7 @@ Request body: None.
 Response body:
 
     {
+      "state": "Buffering" | "Autotuning" | "Learning" | "Monitoring" | "Error"
       "pca": list of length-3 vectors representing cluster centroids
           with dimensionality reduced to 3 principal components. List length
           is one plus the maximum cluster ID, with element 0 corresponding
@@ -436,8 +566,9 @@ Response body:
       "distanceIndexes": distance index associated with each cluster
       "totalInferences": total number of inferences performed so far
       "numClusters": number of clusters created so far (includes zero cluster)
+      "anomalyThreshold": anomaly index detection threshold auto-set by Amber
     }
-    
+   
 Example:
 
     curl --request GET \
