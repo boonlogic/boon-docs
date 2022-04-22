@@ -60,6 +60,7 @@
 * *[The Training Buffer](docs/AmberDocs/Overview.md/#Training_Buffer)*
 * *[Anomalies During Training](docs/AmberDocs/Overview.md/#Anomalies_During_Training)*
 * *[Using Pretraining](docs/AmberDocs/Overview.md/#Pretraining)*
+* *[Re-enabling Learning](docs/AmberDocs/Overview.md/#Enable_Learning)*
 
 **[Amber Outputs](docs/AmberDocs/Overview.md#Amber_Outputs)**
 

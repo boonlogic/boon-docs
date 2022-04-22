@@ -238,6 +238,9 @@ One way to use this functionality is to set the variable **autotune config** to 
 
 When autotune config is set to true, Amber uses the given historical dataset size to determine and set the configuration values instead of using the original values. This is the default functionality for pretraining the model. The autotuned parameters are set so that Amber buffers, autotunes, and learns over the entire dataset and the model ends in monitoring. Using the previous example of a training set of 2,000 rows, the samples to buffer and learning max samples variables would be set to 2,000 so that after pretraining completes, further streamed data would be processed against a monitoring model.
 
+### <a name="Enable_Learning"></a>Re-enable Learning
+Amber uses the data from the Buffering, Autotuning, and Learning states to train a model. Once Amber reaches Monitoring, Amber processes all subsecuent data using the model but without altering it. In the case where a new behavior is introduced, the Monitoring Amber will alert anomalous events since the new data does not match anything already in the model. In the instance of the new data behavior being another acceptable state, the Amber model needs to learn the new behavior. A few examples could be a shift in frequency over time due to wear or a new material being processed with the same machine. Instead of training a completely new model, re-enable learning comes into play. In order to re-enable learning, new streaming parameters have to be set for the various graduation requirements. Then as the sensor continues streaming data, Amber will now include the data to continue to create the model. Learning then turns off automatically once a graduation requirement is met.
+
 ## <a name="Amber_Outputs"></a>Amber Outputs
 During Monitoring, each sensor fusion vector processed by Amber produces an entire array of analytic outputs. These are described below.
 
