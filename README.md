@@ -90,7 +90,7 @@
 * *[C++ SDK](https://boonlogic.github.io/amber-cpp-sdk)*
 * *[Go SDK](https://boonlogic.github.io/amber-go-sdk)*
 * *[R SDK](https://boonlogic.github.io/amber-r-sdk)*
-* *[C# SDK](https://boonlogic.github.io/amber-sharp-sdk)*
+* *[C# SDK](https://boonlogic.github.io/amber-csharp-sdk)*
 
 ## <a name="Expert"></a>Expert Console: General-Purpose Analytics
 
