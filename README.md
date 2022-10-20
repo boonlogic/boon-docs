@@ -7,7 +7,7 @@
     <td><img src="images/overview.png" width="400"></td>  
   </tr>
   <tr>
-    <td><em>The Expert Console API and Amber Streaming API provide two different interfaces to the Boon Nano clustering engine.</em></td>
+    <td><em>The Amber Streaming API provides a straight-forward interface to the Boon Nano clustering engine.</em></td>
   </tr>
 </table>
 
@@ -91,16 +91,6 @@
 * *[Go SDK](https://boonlogic.github.io/amber-go-sdk)*
 * *[R SDK](https://boonlogic.github.io/amber-r-sdk)*
 * *[C# SDK](https://boonlogic.github.io/amber-csharp-sdk)*
-
-## <a name="Expert"></a>Expert Console: General-Purpose Analytics
-
-**Expert-Console Programming Interfaces**
-
-* *[REST API](static/index.html)*
-* *[Excel SDK](https://boonlogic.github.io/expert-excel-sdk)*
-* *[Python SDK](https://boonlogic.github.io/expert-python-sdk)*
-* *[Matlab SDK](https://boonlogic.github.io/expert-matlab-sdk)*
-* *[Mathematica SDK](https://boonlogic.github.io/expert-mathematica-sdk)*
 
 ## AVIS DICOM
 
