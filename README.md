@@ -11,6 +11,22 @@
   </tr>
 </table>
 
+## **Amber Programming Interfaces**
+
+### Amber V1
+
+* *[REST API](docs/Amber_REST.md)*
+* *[Python SDK](https://boonlogic.github.io/amber-python-sdk/boonamber/v1)*
+* *[Javascript SDK](https://boonlogic.github.io/amber-javascript-sdk)*
+* *[C++ SDK](https://boonlogic.github.io/amber-cpp-sdk)*
+* *[Go SDK](https://boonlogic.github.io/amber-go-sdk)*
+* *[R SDK](https://boonlogic.github.io/amber-r-sdk)*
+* *[C# SDK](https://boonlogic.github.io/amber-csharp-sdk)*
+
+### Amber V2
+
+* *[Python SDK](https://boonlogic.github.io/amber-python-sdk/boonamber/v2)*
+
 ## <a name="BoonNano"></a>The Boon Nano: The Core Technology
 
 **[Introduction to the Boon Nano](docs/NanoDocs/Overview.md#Intro)**
@@ -81,16 +97,6 @@
 * *[Anomaly Detection in a Multi-Sensor Asset (Sensor Fusion)](docs/AmberDocs/SensorFusionExample/SensorFusionExample.md)*
 
 **[Amber Licensing](docs/Amber_License.md#Amber_Model)**
-
-**Amber Programming Interfaces**
-
-* *[REST API](docs/Amber_REST.md)*
-* *[Python SDK](https://boonlogic.github.io/amber-python-sdk)*
-* *[Javascript SDK](https://boonlogic.github.io/amber-javascript-sdk)*
-* *[C++ SDK](https://boonlogic.github.io/amber-cpp-sdk)*
-* *[Go SDK](https://boonlogic.github.io/amber-go-sdk)*
-* *[R SDK](https://boonlogic.github.io/amber-r-sdk)*
-* *[C# SDK](https://boonlogic.github.io/amber-csharp-sdk)*
 
 ## AVIS DICOM
 
