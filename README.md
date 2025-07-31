@@ -1,10 +1,10 @@
-![Boon Logo](images/BoonLogic.png)
+![Boon Logo company logo](images/BoonLogic.png)
   
 # Boon Logic Application Interface Documentation
 
 <table class="table">
   <tr>
-    <td><img src="images/overview.png" width="400"></td>  
+    <td><img src="images/overview.png" alt="Amber Overview diagram" width="400"></td>  
   </tr>
   <tr>
     <td><em>The Amber Streaming API provides a straight-forward interface to the Boon Nano clustering engine.</em></td>
