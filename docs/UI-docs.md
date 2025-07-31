@@ -1,7 +1,7 @@
 ![Boon Logic company logo](../images/BoonLogic.png)
 # Nano UI Documentation
 
-#### [Clustering with the Boon Nano](./Intro_to_Clustering.md)
+#### [Clustering with the Boon Nano](./NanoDocs/Overview.md)
 
 ## Tutorials
 
