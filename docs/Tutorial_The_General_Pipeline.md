@@ -1,4 +1,4 @@
-![Logo](../images/BoonLogic.png)
+![Boon Logic company logo](../images/BoonLogic.png)
 # Tutorial: The General Pipeline
 
 If you have already authenticated the web page, skip to Initialize Instance
@@ -34,7 +34,7 @@ If you have already authenticated the web page, skip to Initialize Instance
 1. Scroll down to find the next header labelled `configuration`.
 2. The first option is a blue `GET` command labelled `expert/v3/configTemplate`. Click on the blue bar to expand the command.
 3. Click on `Try it out` on the right hand side.
-4. Fill in each field with the following values:  
+4. Fill in each field with the following values:
 
     | variable | value |
     | ---| ---|
@@ -97,7 +97,7 @@ date: Thu, 31 Oct 2019 15:00:27 GMT
 6. The output should be a json block with one header: "ID" followed by a list of integers starting with a 1. These are the IDs for each pattern clustered and which cluster they are associated with.
 
 
-  Congratulations! You have successfully clustered the data!   
+  Congratulations! You have successfully clustered the data!
   See For more information on function calls or [Guide: Nano Results](./Guide_Nano_Results.md) and [Guide: Nano Status](./Guide_Nano_Status.md) for information on getting results.
   <br/>
 

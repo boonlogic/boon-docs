@@ -1,4 +1,4 @@
-![Logo](../images/BoonLogic.png)
+![Boon Logic company logo](../images/BoonLogic.png)
 # Guide: Nano Results
 
 These can be called from any of the following rest calls:
@@ -42,11 +42,11 @@ The distance index (`DI`), is the last of the results' statistical metrics. The 
 
 ##### MD
 `MD` stands for "metadata" and is the one result that is not the same length as the number of clustered patterns. This returns the preprocessing key that was posted with the data.
->NOTE: Obsolete function   
+>NOTE: Obsolete function
 
 
 <br/>
-For more statistical values, see [Guide: Nano Status](./Guide_Nano_Status.md) 
+For more statistical values, see [Guide: Nano Status](./Guide_Nano_Status.md)
 
 <br/>
 

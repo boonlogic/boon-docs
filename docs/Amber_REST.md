@@ -1,4 +1,4 @@
-![Logo](../images/BoonLogic.png)   
+![Boon Logic company logo](../images/BoonLogic.png)
 
 # Boon Amber REST API
 
@@ -149,7 +149,7 @@ Response body:
         ... same as above for each of:
         - getAmberSummary
         - getRootCause
-        - getStatus 
+        - getStatus
         - postPretrain
         - putSensor
       }
@@ -283,7 +283,7 @@ Example:
 
 ## PUT /config
 
-This endpoint has two capabilities: 
+This endpoint has two capabilities:
 
 1. Configure the sensor for "sensor fusion" mode. In this mode, the sensor is configured with an input vector of explicitly named features. Each input feature represents an individual data stream to be combined with the others to form a "fusion vector". The fusion vector is composed of the latest value from each input stream, where the inputs are various sensor streams from the same process under monitoring. The fusion vector acts as a state vector for the system as a whole, enabling joint anomaly detection across all sensors on the asset.
 
@@ -536,7 +536,7 @@ Response body:
       "numClusters": number of clusters created so far (includes zero cluster)
       "anomalyThreshold": anomaly index detection threshold auto-set by Amber
     }
-    
+
 Example:
 
     curl --request GET \
@@ -544,8 +544,8 @@ Example:
       --header "Authorization: Bearer ${idToken}" \
       --header "Content-Type: application/json" \
       --header "sensorId: 0123456789abcdef"
-      
-      
+
+
 ## GET /rootCause
 
 Gets the root cause analysis vector for the given cluster ID or pattern vector.
@@ -569,7 +569,7 @@ Response body:
     	[root cause vector for the second pattern/ID given (if applicable)],
     	...
     ]
-   
+
 Example:
 
     curl --request GET \
@@ -578,9 +578,9 @@ Example:
       --header "Authorization: Bearer ${idToken}" \
       --header "Content-Type: application/json" \
       --header "sensorId: 0123456789abcdef"
-      
+
 OR
-      
+
     curl --request GET \
       --url https://amber.boonlogic.com/v1/rootCause? \
       pattern=[[1,1,2,3,1,2]] \

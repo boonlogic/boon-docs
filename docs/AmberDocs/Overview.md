@@ -1,4 +1,4 @@
-![Logo](../../images/BoonLogic.png)   
+![Boon Logic company logo](../../images/BoonLogic.png)
 ## <a name="Intro"></a>Introduction to Amber
 Amber is a real-time, predictive analytics platform that uses unsupervised machine learning to build high-dimensional models that are individualized to each asset being monitored. Typical assets include include pumps, generators, engines, boilers, etc. However, an **asset** can be broadly defined as any entity with *correlated* measurements that define its operating state. With this definition we can broaden our list of assets.
 
@@ -16,7 +16,7 @@ Amber is a real-time, predictive analytics platform that uses unsupervised machi
 
 <table class="table">
   <tr>
-    <td><img src="images/AmberStages.png" width="800"></td>
+    <td><img src="images/AmberStages.png" alt="Flowchart diagram showing Amber operational stages from user configuration through monitoring mode" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 1: The operational stages of Amber beginning with the domain expert determining which asset sensor values will be used as input to Amber. As more and more asset data is fed into Amber, it automatically transitions through training and into monitoring mode.</em></td>
@@ -31,7 +31,7 @@ As asset data is streamed into Amber, Amber transitions *automatically* through 
 
 <table class="table">
   <tr>
-    <td><img src="images/LearningCurve.png" width="400"></td>
+    <td><img src="images/LearningCurve.png" alt="Learning curve graph showing cluster count growth vs number of asset samples, demonstrating how learning slows and levels off" width="400"></td>
   </tr>
   <tr>
     <td><em>Figure 2: The horizontal axis of the Amber Learning Curve shows the number of asset values that have been sent to Amber. The vertical axis shows the number of clusters in the model. Notice that as more asset data is provided to Amber the learning slows and eventually levels off.</em></td>
@@ -41,11 +41,11 @@ As asset data is streamed into Amber, Amber transitions *automatically* through 
 * **Monitoring:** The final phase of Amber is monitoring. In Monitoring mode, the Amber model customized for the asset is complete and Amber learning is turned off. Asset data sent into Amber is processed through the asset model, and the full Amber analytic results corresponding to the incoming asset data are returned in real-time.
 
 ### <a name="Operation_Example"></a>Amber Training Example
-Figure 3 shows an example of Amber training for a motor asset. Five features were chosen by the subject matter expert for this motor to represent its operational states (more detail is given in [this example](SensorFusionExample/SensorFusionExample.md)). From sample 1 through 10,000 we see the Amber Buffering stage described above. Nothing is happening inside of Amber during this period except that Amber is collecting the asset samples and waiting until the configured number of samples has been acquired. (More detail on configuration of Amber and Amber training is included below.) 
+Figure 3 shows an example of Amber training for a motor asset. Five features were chosen by the subject matter expert for this motor to represent its operational states (more detail is given in [this example](SensorFusionExample/SensorFusionExample.md)). From sample 1 through 10,000 we see the Amber Buffering stage described above. Nothing is happening inside of Amber during this period except that Amber is collecting the asset samples and waiting until the configured number of samples has been acquired. (More detail on configuration of Amber and Amber training is included below.)
 
 <table class="table">
   <tr>
-    <td><img src="images/AmberTrainingExample.png" width="800"></td>
+    <td><img src="images/AmberTrainingExample.png" alt="Example graph of Amber training phases for motor asset with 5 superimposed sensor fusion features" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 3: Example showing Amber training phases for a motor asset. The sensor fusion vector has 5 features which are superimposed on this plot.</em></td>
@@ -58,7 +58,7 @@ Figure 4 shows an example of Amber training on single-sensor. For this example, 
 
 <table class="table">
   <tr>
-    <td><img src="images/amber_training.png" width="800"></td>
+    <td><img src="images/amber_training.png" alt="Training diagram showing single-sensor input and corresponding Amber SI output, with zero values during buffering/autotuning" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 4: Amber training showing single-sensor input and the corresponding Amber output for the SI (Anomaly Index) output. Note that zero is returned as the analytic result until autotuning is complete. </em></td>
@@ -67,11 +67,11 @@ Figure 4 shows an example of Amber training on single-sensor. For this example, 
 
 ## <a name="Definitions"></a>Definitions and Terminology
 
-Amber consumes sensor data values as it builds its machine learning models and monitors assets and processes. Values are sent to Amber as comma-separated values (CSV) and support I8 32-bit floating-point range and precision. Many assets to be monitored have several values that can be sampled at the same moment in time thereby creating a "snapshot" of the state of that asset at that moment. By assembling these measurements into a single vector (a sequence of comma-separated values), we create a **sensor fusion** vector for that asset at that moment in time (Figure 5). In some cases, the temporal sequence of sensor fusion vectors may have predictive value in describing normal operation of the asset. In this case, the **streaming window size** parameter creates a multivariate time series that will be learned and monitored by Amber (Figures 5 and 6). In this case, we define a **pattern** as that time series of sensor fusion vectors. Note that patterns *overlap* temporally adjacent sensor fusion vectors with a new pattern being created by each newly arriving sensor fusion vector. 
+Amber consumes sensor data values as it builds its machine learning models and monitors assets and processes. Values are sent to Amber as comma-separated values (CSV) and support I8 32-bit floating-point range and precision. Many assets to be monitored have several values that can be sampled at the same moment in time thereby creating a "snapshot" of the state of that asset at that moment. By assembling these measurements into a single vector (a sequence of comma-separated values), we create a **sensor fusion** vector for that asset at that moment in time (Figure 5). In some cases, the temporal sequence of sensor fusion vectors may have predictive value in describing normal operation of the asset. In this case, the **streaming window size** parameter creates a multivariate time series that will be learned and monitored by Amber (Figures 5 and 6). In this case, we define a **pattern** as that time series of sensor fusion vectors. Note that patterns *overlap* temporally adjacent sensor fusion vectors with a new pattern being created by each newly arriving sensor fusion vector.
 
 <table class="table">
   <tr>
-    <td><img src="images/AmberDefinitions.png" width="800"></td>
+    <td><img src="images/AmberDefinitions.png" alt="Diagram illustrating basic Amber input data definitions including sensor fusion vectors and streaming windows" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 5: Basic definitions for understanding Amber input data.</em></td>
@@ -80,7 +80,7 @@ Amber consumes sensor data values as it builds its machine learning models and m
 
 <table class="table">
   <tr>
-    <td><img src="images/PatternProcessingSWS=3.png" width="800"></td>
+    <td><img src="images/PatternProcessingSWS=3.png" alt="Visual representation of overlapping pattern processing with streaming window size of 3" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 6: Amber processes overlapping patterns moving forward in the data stream one sensor fusion vector at a time. Each pattern is assigned a cluster ID, and anomaly index and several other ML-based values.</em></td>
@@ -89,7 +89,7 @@ Amber consumes sensor data values as it builds its machine learning models and m
 
 <table class="table">
   <tr>
-    <td><img src="images/PatternProcessingSWS=5.png" width="800"></td>
+    <td><img src="images/PatternProcessingSWS=5.png" alt="Diagram showing pattern processing with streaming window size of 5, illustrating pattern length calculation" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 7: The pattern length is the product of the number of features (in each sensor fusion vector) times the streaming window size.</em></td>
@@ -100,18 +100,18 @@ One special case is the *single-sensor* time series where there is only one feat
 
 <table class="table">
   <tr>
-    <td><img src="images/SingleSensorSpecialCase.png" width="500"></td>
+    <td><img src="images/SingleSensorSpecialCase.png" alt="Special case diagram for single-sensor time series processing with streaming window management" width="500"></td>
   </tr>
   <tr>
     <td><em>Figure 8: A one-dimensional time series can be processed by configuring Amber with only one feature and with a streaming window size equal to the number of successive values from the sensor to be processed as one pattern. Each successive value only needs to be sent one time. Amber manages the overlapping of the streaming window.</em></td>
   </tr>
 </table>
 
-The order of sending values to Amber is a simple, comma-separated sequence as shown in Figure 9. Amber will have already been configured to know the length of each sensor fusion vector so there is no need delimit sensor fusion vectors, however, it is important that there are no missing values and that every feature in each sensor fusion vector is sent to retain parity as Amber parses the incoming stream of values. 
+The order of sending values to Amber is a simple, comma-separated sequence as shown in Figure 9. Amber will have already been configured to know the length of each sensor fusion vector so there is no need delimit sensor fusion vectors, however, it is important that there are no missing values and that every feature in each sensor fusion vector is sent to retain parity as Amber parses the incoming stream of values.
 
 <table class="table">
   <tr>
-    <td><img src="images/ValueSendOrder.png" width="800"></td>  
+    <td><img src="images/ValueSendOrder.png" alt="Flowchart showing value sending order for sensor fusion vectors regardless of vector length" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 9: Regardless of the length of the sensor fusion vectors, values are always sent to Amber in the order shown above. Amber uses the configured number of features to know where to start the next sensor fusion vector.</em></td>
@@ -124,14 +124,14 @@ Amber can be configured to monitor a wide variety of assets and processes. The a
 
 ### Single-Feature Versus Multi-Feature Processing
 
-A boiler may have only a single temperature sensor that reports its temperature at any given time. A motor may have an accelerometer that gives multiple correlated values (such as X-, Y-, Z- RMS or frequency band values). An engine may have multiple accelerometers giving vibrational data at different locations. In addition, there may be control information such as motor RPM or current draw that correlates with the mode of operation of the asset. These are all examples of **features** that Amber can use to create its models. 
+A boiler may have only a single temperature sensor that reports its temperature at any given time. A motor may have an accelerometer that gives multiple correlated values (such as X-, Y-, Z- RMS or frequency band values). An engine may have multiple accelerometers giving vibrational data at different locations. In addition, there may be control information such as motor RPM or current draw that correlates with the mode of operation of the asset. These are all examples of **features** that Amber can use to create its models.
 
 #### <a name="Single_Feature"></a>Single-Feature Processing
 For some assets there may only be one feature available for processing in Amber (Figure 8). In this case, the streaming window size becomes very important in determining the predictive model that Amber builds.  Figure 10 shows three examples.
 
 <table class="table">
   <tr>
-    <td><img src="images/SingleSensorExamples.png" width="800"></td>  
+    <td><img src="images/SingleSensorExamples.png" alt="Three examples of single sensor streaming data: motor current, EEG voltage, and accelerometer output" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 10: Three examples of single sensor streaming data. (a) Output current from an industrial motor running a "bottle capping" motion profile. (b) Voltage from a single cranial electrode in an electroencephalogram (EEG). (c) Raw accelerometer output showing vibrational patterns of a motor. In each example, there is a single feature and the streaming window size determines the pattern length and the types of anomalies that will be detected (cf. Figure 8).</em></td>
@@ -142,7 +142,7 @@ Let's take as an example the current draw from a motor, acquired by reading a PL
 
 <table class="table">
   <tr>
-    <td><img src="images/streaming_window_25.png" width="800"></td>  
+    <td><img src="images/streaming_window_25.png" alt="Diagram showing streaming window of 25 contiguous samples ending with most recent sample" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 11: A streaming window is a contiguous set of samples ending with the most recently acquired sample. The streaming window size shown here is 25. </em></td>
@@ -156,7 +156,7 @@ Once a streaming window size is chosen, then Amber will "slide" the window along
 
 <table class="table">
   <tr>
-    <td><img src="images/MultiFeatureData.png" width="800"></td>  
+    <td><img src="images/MultiFeatureData.png" alt="Table showing sensor fusion data with 6 features per row and three highlighted vectors plotted" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 12: Each row is a sensor fusion vector with 6 features that will be analyzed by Amber. The three highlighted sensor fusion vectors are plotted at the right. Amber builds its models based on the relationships between measured features of the asset at each point in time. The timestamp is not part of the sensor fusion vector. </em></td>
@@ -167,14 +167,14 @@ It is worth noting in Figure 12, that the period between sensor fusion vectors i
 
 **Streaming Windows Size greater than 1:** While less common, there may be situations where the temporal relationship between successive sensor fusion vectors has diagnostic meaning. This would occur, for example, with a high sample rate and where the ongoing *change* in the relationships between sensor was important. In these situations, the streaming window size can be set to values larger than 1. With a streaming window size greater than 1, Amber is doing sensor fusion analysis across a *streaming window* of successive sensor fusion vectors, and Amber becomes a powerful tool for doing multi-variate time series analysis. Because the time series of values creates the total pattern that is processed by Amber, it is important that the period between sensor fusion vectors is consistent.
 
-<img src="images/MultiAndSWSTable.png" width="500">
+<img src="images/MultiAndSWSTable.png" alt="Table showing relationship between multiple features and streaming window size configurations" width="500">
 
 ### <a name="Config_Params"></a>Configuration Parameters
 The following parameters determine the way that Amber will ingest data and how it will transition between its training phases (Figure 1). Along with the definition, some recommendations are given for how to set these values.
 
 * **featureCount** The number of features in each sensor fusion vector. This is set by the domain expert as they determine the asset features that will be used to train Amber (Figure 5).
 * **streamingWindowSize:** The number of successive samples to use in creating overlapping patterns (Figure 6 and 7). Recommendations for this parameters are given in the previous section.
-* **samplesToBuffer:** Incoming sensor samples will be buffered until this number of asset samples has been collected at which time autotuning begins on the buffered sensor data. Autotuning will typically require up to 200 additional sensor values to run to completion, as it uses each batch of asset samples to increment its internal search algorithm. Once autotuning is complete, Amber uses the autotuned ranges and percent variation to set its hyperparameters (Figure 1). The value chosen for samplesToBuffer should be large enough to give Amber a representative block of data representing normal operation of the asset. (See [Amber Training Recommendations](#Training_Recommendations) below). 
+* **samplesToBuffer:** Incoming sensor samples will be buffered until this number of asset samples has been collected at which time autotuning begins on the buffered sensor data. Autotuning will typically require up to 200 additional sensor values to run to completion, as it uses each batch of asset samples to increment its internal search algorithm. Once autotuning is complete, Amber uses the autotuned ranges and percent variation to set its hyperparameters (Figure 1). The value chosen for samplesToBuffer should be large enough to give Amber a representative block of data representing normal operation of the asset. (See [Amber Training Recommendations](#Training_Recommendations) below).
 * **anomalyHistoryWindow:** Every incoming dataset or sensor has a normal amount of anomalous behavior. This normaly amount of variations are taken into account when calculating the AH, AM, and AW output values. These values learn a normal amount of detections within a given window of time so that when in monitoring, the variation of the sensors and datasets are accounted for. AnomalyHistoryWindow gives the number of samples to use as the window for determining that normal amount of anomalies. This value should be decently large so that the variation can occur normally. For example, with sampling every minute, an anomalyHistoryWindow of 10,000 would learn what is a normal count of anomalies within the last week. (See [Amber Training Recommendations](#Anomalies_During_Training) below).
 * **learningMaxClusters (graduation requirement):** If during the Learning phase, Amber reaches  learningMaxClusters clusters in its model (the vertical axis of Figure 2), then learning is automatically turned off and Amber transitions to Monitoring mode. The default value of 1000 clusters is a reasonable upper bound for even very complex assets.
 * **learningMaxSamples (graduation requirement):** If during the learning phase, the asset has sent at least learningMaxSamples samples (the horizontal axis of Figure 2), then learning is automatically turned off and Amber transitions to monitoring mode. This parameter can be used to force learning to stop after some number of samples from the asset. This should generally be set to a very large value like one million in order to let Amber determine the end of learning from the Learning Curve slope.
@@ -189,17 +189,17 @@ It is not uncommmon for there to be sensor values streaming from an asset that c
 
 **Noise in the Signal** Noise is typical in real-world sensor data and Amber accounts for this naturally when building its ML models with no loss of accuracy. In extreme cases, a misconfigured or malfunctioning sensor may be generating so much noise that the underlying signal is lost. If that feature is included in an Amber sensor fusion vector, its effect will depend on the number of other coherent features in the sensor fusion vector. If it is only one alongside, say, 10 other coherent features then Amber will still generate an accurate model of the asset. In practice, such a feature should be excluded or cleaned up to optimize the detection performance of Amber.
 
-**Monotonic Features** A common monotonically increasing feature of many assets is "hours of operation". While this measurement is useful for preventative maintenance schedules, it is not helpful for the predictive analytics of Amber. A monotonically increasing feature in a sensor fusion vector makes it appear as if every sensor fusion vector is new, thus biasing Amber to generate anomalies. Monotonic features (whether increasing or decreasing) should not be included in sensor fusion vectors processed by Amber. 
+**Monotonic Features** A common monotonically increasing feature of many assets is "hours of operation". While this measurement is useful for preventative maintenance schedules, it is not helpful for the predictive analytics of Amber. A monotonically increasing feature in a sensor fusion vector makes it appear as if every sensor fusion vector is new, thus biasing Amber to generate anomalies. Monotonic features (whether increasing or decreasing) should not be included in sensor fusion vectors processed by Amber.
 
 ### <a name="Redundant"></a>Redundant and Poorly Correlated Features
 A typical technique when using traditional anomaly detection methods is to remove redundant features and poorly correlated features. This is done to reduce the computational load in building and inferencing from the model and also to improve the accuracy of the model. It is typical to try to remove poorly correlated features and to include only the top 10 or so diagnostic features out of perhaps hundreds of available asset features. This data science exercise requires many engineering hours studying covariance, principal components, training set correlations, and the like. Amber is very tolerant of redundant features and poorly correlated features. First of all, whether 10 or 100 are included in a sensor fusion vector, Amber's inference time is consistent. This means that redundant features can be included without affecting the speed of the detector. Second, Amber will use whatever information is avaiable in a poorly correlated feature to improve the accuracy of the resulting model. If a feature has no correlation whatsoever to the asset behavior, then it should be treated like a noise feature (described above).
 
 ### <a name="Missing"></a>Missing Data and Variable Sample Rates
-**Streaming Window Size = 1** Amber processes only numeric data. An Amber sensor fusion configuation includes the number of features, so Amber will reject incoming sensor fusion vectors with fewer than the configured number of values. Having said that, we know that certain types of sensors will fail to produce data on every sampling cycle. It is also common for sensors to produce samples at different rates. For instance, temperature sensors may be sampled very slowly and vibration sensors at higher sample rates (Figure 13). Coping with this reality is within the scope of any data analysis exercise and is not limited to Amber. However, we mention two standard approaches: *upsampling* slowly sampled features and *downsampling* features with high relative sample rates. 
+**Streaming Window Size = 1** Amber processes only numeric data. An Amber sensor fusion configuation includes the number of features, so Amber will reject incoming sensor fusion vectors with fewer than the configured number of values. Having said that, we know that certain types of sensors will fail to produce data on every sampling cycle. It is also common for sensors to produce samples at different rates. For instance, temperature sensors may be sampled very slowly and vibration sensors at higher sample rates (Figure 13). Coping with this reality is within the scope of any data analysis exercise and is not limited to Amber. However, we mention two standard approaches: *upsampling* slowly sampled features and *downsampling* features with high relative sample rates.
 
 <table class="table">
   <tr>
-    <td><img src="images/upsample_downsample.png" width="800"></td>  
+    <td><img src="images/upsample_downsample.png" alt="Three-panel diagram showing variable sample rate handling through upsampling and downsampling approaches" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 13: (a) shows data sensor fusion vectors with variable sample rates and two errors. (b) shows one approach to upsampling temperature (foward-filling). (c) shows a downsampling approach where the sensor fusion vector with missing values or error values are dropped. Only the highlighted values will be sent to Amber.</em></td>
@@ -212,11 +212,11 @@ Upsampling can be done via forward-filling or interpolation. Upsampling slowly s
 When the streaming window size is greater than one, Amber uses the temporal relation between successive samples in building its ML model. In such situations, upsampling and downsampling are only advisable if a consistent sample period between succussive value can be maintained. The most important example of this is for single-sensor streaming where there is one sensor producing a consistently sampled time series of values (Figure 11). In this case, downsampling via dropping just the sporadic error values is not good practice as it changes the pattern that Amber consumes. If there are missing values in the time series, some anomalies may be generated until the error/missing value is clear of the configured streaming window.
 
 ### <a name="Categorical"></a>Categorical Data
-Many sensor applications will include non-numerical data that describes a *state* or *operational mode* of the asset. For instance, a string might indicate the type of material being processed ("sand", "concrete", "gravel") or it might indicate a mode of operation ("high-speed forward", "low-speed reverse"). This type of data is called *categorical* because it indicates some discrete finite set of values rather than a continuum of magnitudes. Categorical data cannot be processed directly by Amber until it has been transformed into numeric values. If there are two categories (such as "low speed" and "high speed"), they can be replaced by a 0 and 1 and Amber will be able to use them for building its model. If there are three or more categories, there may still be a reasonable way to assign an ordering to them (such as replacing "low", "medium", "high" with 0, 1, and 2). If there are more than two categories and they cannot be meaningfully ordered as magnitudes ("water", "silt", "slurry", "powder") they may still be replaced with numerical values, but the particular ordering chosen will create a bias in the n-space segmentation of the sensor fusion vectors as the model is built. 
+Many sensor applications will include non-numerical data that describes a *state* or *operational mode* of the asset. For instance, a string might indicate the type of material being processed ("sand", "concrete", "gravel") or it might indicate a mode of operation ("high-speed forward", "low-speed reverse"). This type of data is called *categorical* because it indicates some discrete finite set of values rather than a continuum of magnitudes. Categorical data cannot be processed directly by Amber until it has been transformed into numeric values. If there are two categories (such as "low speed" and "high speed"), they can be replaced by a 0 and 1 and Amber will be able to use them for building its model. If there are three or more categories, there may still be a reasonable way to assign an ordering to them (such as replacing "low", "medium", "high" with 0, 1, and 2). If there are more than two categories and they cannot be meaningfully ordered as magnitudes ("water", "silt", "slurry", "powder") they may still be replaced with numerical values, but the particular ordering chosen will create a bias in the n-space segmentation of the sensor fusion vectors as the model is built.
 
 ## <a name="Training_Recommendations"></a>Amber Training Recommendations
 
-As described in Figure 3, Amber sets its hyperparameters during the Autotuning phase and then builds its anomaly detection model during the Learning Phase. Since Amber's learning capability is turned off during the Monitoring stage, it is important that learning is complete when Amber reaches the Monitoring state. 
+As described in Figure 3, Amber sets its hyperparameters during the Autotuning phase and then builds its anomaly detection model during the Learning Phase. Since Amber's learning capability is turned off during the Monitoring stage, it is important that learning is complete when Amber reaches the Monitoring state.
 
 ### <a name="Autotuning_Buffer"></a>The Autotuning Buffer
 The Autotuning Buffer is comprised of all data collected during the Buffering stage. The samplesToBuffer parameter determines when that data collection stops. During Autotuning, Amber learns the normal minimium and maximum value for each feature. Thus it is important that samplesToBuffer is set large enough to include all normal minimum and maximum values for each feature. Amber does outlier rejection in computing this normal range, so if there are transient spikes beyond the samplesToBuffer limit that will not be a problem. Amber also sets the percent variation hyperparameter from the autotuning buffer, so it is good to include enough data to show typical operation modes.
@@ -225,7 +225,7 @@ The Autotuning Buffer is comprised of all data collected during the Buffering st
 The *training buffer* for Amber is comprised of all asset data collected during the Buffering, Autotuning, and Learning phases. During these three phases, Amber learns what normal variation and normal operation look like for the asset. Thus, it is important that those normal modes of operation be included in the training buffer. For example, a pump may routinely pump freshwater, saltwater, and a silty slurry. If the training buffer only includes data while pumping freshwater and saltwater, then when the slurry is first encountered during the Amber Monotoring stage, the anomaly index will spike and alerts will be triggered. Another common state for an asset is "turned off/not running" (Figure 3). If this is a normal state for the asset, then the training buffer should include those sensor fusion vectors. If, however, an asset should always be running, then not including the "off" state in the training buffer will ensure that anomaly condition (along with all of the more subtle anomaly conditions) will be detected in the Monitoring state.
 
 ### <a name="Anomalies_During_Training"></a>Anomalies During Training
-A common question about Amber goes like this, "If Amber is learning normal variation during the training, and an anomaly occurs during the training, will that mean that Amber will not detect it during the Monitoring State?" The short answer is "No, Amber will still detect it." During training, Amber is not only learning normal variations, but it is also learning the relative frequency/infrequency of those normal variations. This means that an anomaly occuring during training will indeed be learned as one state of that asset, but Amber will also learn that the anomaly state is very unusual (anomalous) among all of the other normal variation seen during training. So if the anomaly were to reoccur during Monitoring, it would still look like an anomaly. A further important point on this is that because Amber's segmentation models of normal variation are so high-dimensional, all anomalies tend to look very different from each other. This principle in statistics is known as the Anna Karenina principle and applies equally to Amber. 
+A common question about Amber goes like this, "If Amber is learning normal variation during the training, and an anomaly occurs during the training, will that mean that Amber will not detect it during the Monitoring State?" The short answer is "No, Amber will still detect it." During training, Amber is not only learning normal variations, but it is also learning the relative frequency/infrequency of those normal variations. This means that an anomaly occuring during training will indeed be learned as one state of that asset, but Amber will also learn that the anomaly state is very unusual (anomalous) among all of the other normal variation seen during training. So if the anomaly were to reoccur during Monitoring, it would still look like an anomaly. A further important point on this is that because Amber's segmentation models of normal variation are so high-dimensional, all anomalies tend to look very different from each other. This principle in statistics is known as the Anna Karenina principle and applies equally to Amber.
 
 Having said this, it is important to state that a persistant fault condition should not be present during training. If a motor mount is broken while Amber is training, Amber will learn that whatever strange vibratory pattern is caused by that fault is "normal" since it will not be just happening sporadically, but in an ongoing way.
 
@@ -282,5 +282,3 @@ Once an Amber sensor has been created, you can get current information about its
 
 * **Example 2: Single-Sensor Processing (Vibrational Anomalies)**: Rockwell data set
 -->
-
-

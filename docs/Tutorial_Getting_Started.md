@@ -1,4 +1,4 @@
-![Logo](../images/BoonLogic.png)
+![Boon Logic company logo](../images/BoonLogic.png)
 # Tutorial: Getting Started
 
 ### Open Nano UI
@@ -13,7 +13,7 @@
 4. Click `Authorize`
 5. Close the prompt window
 
-Congratulations! Your nano web access is now ready to use.  
+Congratulations! Your nano web access is now ready to use.
 See [The General Pipeline](../Tutorials/Tutorial_The_General_Pipeline.md) for next steps.
 <br/>
 

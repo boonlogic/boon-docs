@@ -1,4 +1,4 @@
-![Logo](../images/BoonLogic.png)   
+![Boon Logic company logo](../images/BoonLogic.png)
 
 # Overview of the Boon Amber
 
@@ -23,7 +23,7 @@ Anomaly index values range from 0 to 1000, with values closer to 0 representing 
 
 ## Streaming results
 
-When a single pattern is assigned an anomaly index, this is called an *inference*. Besides the anomaly index, a number of other useful analytic outputs are generated. 
+When a single pattern is assigned an anomaly index, this is called an *inference*. Besides the anomaly index, a number of other useful analytic outputs are generated.
 
 * **Cluster ID (ID)**: The Boon Nano assigns a **cluster ID** to each input vector as they are processed. The first vector is always assigned to a new cluster ID of 1. The next vector, if it is within the defined percent variation of cluster 1, is also assigned to cluster 1. Otherwise it is assigned to a new cluster 2. Continuing this way all vectors are assigned cluster IDs in such a way that each vector in each cluster is within the desired percent variation of that cluster's template. In some circumstances the cluster ID 0 may be assigned to a pattern. This happens, for example, if learning has been turned off or if the maximum cluster count has been reached. It should be noted that cluster IDs are assigned serially so having similar cluster IDs (for instance, 17 and 18) says nothing about the similarity of those clusters. However, PCA can be used to measure relative proximity of clusters to each other.
 

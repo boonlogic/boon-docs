@@ -1,4 +1,4 @@
-![Logo](../images/BoonLogic.png)   
+![Boon Logic company logo](../images/BoonLogic.png)
 
 # Boon Amber Licensing
 
@@ -28,7 +28,7 @@ The **~/.Amber.license** file will be consulted by the Amber SDKs to find and au
 
 ## Amber licensing with REST/API
 
-The REST/API controls authentication through the /oauth2 API endpoint.  
+The REST/API controls authentication through the /oauth2 API endpoint.
 
 See: *[REST API](../docs/Amber_REST.md)*
 

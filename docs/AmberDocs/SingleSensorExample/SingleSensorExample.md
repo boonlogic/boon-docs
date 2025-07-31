@@ -1,4 +1,4 @@
-![Logo](../../../images/BoonLogic.png)   
+![Boon Logic company logo](../../../images/BoonLogic.png)
 # Example: Anomaly Detection in a Single-Sensor Time Series
 
 ## Introduction
@@ -9,7 +9,7 @@ Figure 1 shows 30,400 output current samples from a bottle-capping, motion profi
 
 <table class="table">
   <tr>
-    <td><img src="images/SingleSensorRawSignal.png" width="800"></td>
+    <td><img src="images/SingleSensorRawSignal.png" alt="Time series plot of servo-motor output current with three types of anomalies marked as (a), (b), and (c)" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 1: The output current of a servo-motor with three types of anomalies marked: (a), (b), and (c).</em></td>
@@ -18,11 +18,11 @@ Figure 1 shows 30,400 output current samples from a bottle-capping, motion profi
 
 ## <a name="Cluster_Growth"></a>Cluster Growth
 
-Amber learns normal variation in the output current as it begins processing the overlapping streaming windows. When significant new variation is found Amber adds new clusters to the model to capture that aspect of the input signal (Figure 2). This increasing number of clusters in the model creates what we call the *learning curve* for the asset. The example in Figure 2 is for a very simple motion so most of the normal variation is learned within the first 300 samples. More complex motion profiles (such as the non-rotational motion profiles of robots) may require thousands, tens of thousands, or even hundreds of thousands of samples to define all of the normal variation in the sensor time series. This is not a problem for Amber it can support hundreds or even thousands of clusters, creating an extremely high-dimensional model of the asset. 
+Amber learns normal variation in the output current as it begins processing the overlapping streaming windows. When significant new variation is found Amber adds new clusters to the model to capture that aspect of the input signal (Figure 2). This increasing number of clusters in the model creates what we call the *learning curve* for the asset. The example in Figure 2 is for a very simple motion so most of the normal variation is learned within the first 300 samples. More complex motion profiles (such as the non-rotational motion profiles of robots) may require thousands, tens of thousands, or even hundreds of thousands of samples to define all of the normal variation in the sensor time series. This is not a problem for Amber it can support hundreds or even thousands of clusters, creating an extremely high-dimensional model of the asset.
 
 <table class="table">
   <tr>
-    <td><img src="images/ClusterGrowth.png" width="800"></td>
+    <td><img src="images/ClusterGrowth.png" alt="Cluster growth curve showing learning progression as Amber processes overlapping streaming windows" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 2: Cluster growth as Amber learns normal variation in the output current of a servo-motor creates an increasing learning curve. In this case, after two motion cycles nearly all variation is learned by Amber as shown by (a) and (b). The streaming windows near (c) and (d) find new variation and so new clusters are added to the model.</em></td>
@@ -39,7 +39,7 @@ Once configured, Amber is ready to start processing current values coming from t
 
 <table class="table">
   <tr>
-    <td><img src="images/AmberAnalyticsStack.png" width="800"></td>
+    <td><img src="images/AmberAnalyticsStack.png" alt="Amber analytic stack visualization showing six different output metrics for streaming window size of 25" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 3: The Amber Analytic Stack for a Streaming Window Size of 25. Each output current sample sent to Amber is processed and six machine learning outputs are returned.</em></td>
@@ -52,7 +52,7 @@ Although rarely used directly, the Cluster ID is a core analytic output of Amber
 
 <table class="table">
   <tr>
-    <td><img src="images/ClusterID.png" width="800"></td>
+    <td><img src="images/ClusterID.png" alt="Cluster ID output over time showing buffering/autotuning phase and monitoring state transitions" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 4: Once Buffering and Autotuning is complete, a cluster ID is returned for each sample sent to Amber. At (a), Amber is in Monitoring state and learning is turned off. Thus, when the anomaly occurs in the signal, no new clusters are created and Amber returns a 0 for the Cluster ID. </em></td>
@@ -67,7 +67,7 @@ The Smoothed Anomaly Index (SI) is derived from the Cluster ID as the relative f
 
 <table class="table">
   <tr>
-    <td><img src="images/AnomalyIndexSI.png" width="800"></td>
+    <td><img src="images/AnomalyIndexSI.png" alt="Smoothed Anomaly Index plot showing anomaly detection spikes corresponding to sensor signal anomalies" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 5: Once Buffering and Autotuning is complete, a Smoothed Anomaly Index is returned for each sample sent to Amber.  </em></td>
@@ -78,7 +78,7 @@ The SI value is one of the most useful core analytics for detecting anomalies. A
 
 <table class="table">
   <tr>
-    <td><img src="images/AnomalyDetectionLatency.png" width="800"></td>
+    <td><img src="images/AnomalyDetectionLatency.png" alt="Detection latency examples showing how quickly anomalies are detected relative to streaming window size" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 6: The detection latency is shown at (a) and (b). It will always be less than the streaming window size and typically much shorter, which in this case was configured for 25 samples.  </em></td>
@@ -91,7 +91,7 @@ Just before switching from Learning to Monitoring state, Amber computes an optim
 
 <table class="table">
   <tr>
-    <td><img src="images/AmberStackExample.png" width="800"></td>
+    <td><img src="images/AmberStackExample.png" alt="Complete Amber analytics stack example showing all six output metrics during one anomaly event" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 7: The Amber Analytics Stack for one of the anomalies.</em></td>
@@ -109,7 +109,7 @@ As described in [this section](../Overview.md#Single_Sensor), the configured str
 
 <table class="table">
   <tr>
-    <td><img src="images/SWSEffects.png" width="800"></td>
+    <td><img src="images/SWSEffects.png" alt="Comparison of streaming window size effects showing different anomaly detection results for SWS=25 vs SWS=100" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 8: The only difference between the Amber run on the left and the Amber run on the right is two different settings for the Streaming Window Size. When the SWS = 25, no anomaly is detected for the unusually long gap between bottle-capping current surges. With SWS = 100, the long gap is detected as an anomaly.</em></td>
@@ -133,14 +133,13 @@ To get these results, we configure Amber with following settings
 * Learning Rate Numerator: 1
 * Learning Rate Denominator: 1000
 
-The Feature Count is set to 1 since there just the one feature in this time series. Setting the Streaming Window Size to 25 means Amber will look at 25 consecutive samples as one pattern to be clustered. Setting the Streaming Window Size to 100 means Amber will look at 100 consecutive samples as one pattern to be clustered. Samples to Buffer is set to 1000 since, for this data set, that is enough to capture both the normal running states for this asset. Setting the Learning Rate Numerator to 1 and the Denominator to 1000 means that Amber will switch automatically from Learning to Monitoring when there are fewer than 1 new clusters created over 1000 consecutive samples. 
+The Feature Count is set to 1 since there just the one feature in this time series. Setting the Streaming Window Size to 25 means Amber will look at 25 consecutive samples as one pattern to be clustered. Setting the Streaming Window Size to 100 means Amber will look at 100 consecutive samples as one pattern to be clustered. Samples to Buffer is set to 1000 since, for this data set, that is enough to capture both the normal running states for this asset. Setting the Learning Rate Numerator to 1 and the Denominator to 1000 means that Amber will switch automatically from Learning to Monitoring when there are fewer than 1 new clusters created over 1000 consecutive samples.
 
 Using the data set provided and the Amber configuration above, send in 10 samples at a time and you should get results for the Anomaly Index (SI) that look as shown in Figure 3. The complete set of Amber results are in these file.
- 
+
 <a href="SWS25_Results.csv" download>Download Amber Results for SWS = 25</a>
 
 <a href="SWS100_Results.csv" download>Download Amber Results for SWS = 100</a>
 
 ### Interpreting Root Cause
 In the case of single sensor, root cause does not provide any additional information about the results. The purpose of root cause is to determine which feature is of interest when the new cluster was created, but in single-sensor applications, there is only one source for all the features.
-

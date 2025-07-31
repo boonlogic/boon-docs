@@ -1,4 +1,4 @@
-![Logo](../images/BoonLogic.png)
+![Boon Logic company logo](../images/BoonLogic.png)
 # Guide: Nano Status
 
 ### Options
@@ -44,7 +44,7 @@ This is exactly what the variable says it is: the number of clusters created up 
 This is the total number of patterns successfully clustered. The total of all the values in clusterSizes should also equal this value.
 
 ##### averageInferenceTime
-The value returned here is the average time to cluster each inference in microseconds.  
+The value returned here is the average time to cluster each inference in microseconds.
 
 <br/>
 

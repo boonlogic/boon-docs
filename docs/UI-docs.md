@@ -1,4 +1,4 @@
-![Logo](../images/BoonLogic.png)
+![Boon Logic company logo](../images/BoonLogic.png)
 # Nano UI Documentation
 
 #### [Clustering with the Boon Nano](./Intro_to_Clustering.md)
